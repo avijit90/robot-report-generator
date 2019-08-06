@@ -1,84 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot rpa="false" generated="20190730 14:01:06.850" generator="Robot 3.1.2 (Python 2.7.14 on win32)">
-<suite source="C:\UOB_API_Auto\TestCases\SystemFeatures\Phrases\POST_Phrase_Save.robot" id="s1" name="Test suite">
-<test id="s1-t1" name="Phrase_save_valid_input">
-<kw name="APITesting_Create_Session" library="Keywords">
-<kw name="Create Session" library="RequestsLibrary">
-<doc>Create Session: create a HTTP session to a server</doc>
-<arguments>
-<arg>${APISESSION}</arg>
-<arg>${HOST}</arg>
-</arguments>
-<assign>
-<var>${Resp}</var>
-</assign>
-<msg timestamp="20190730 14:01:07.751" level="INFO">Creating Session using : alias=APISESSION, url=http://blrcssfbcc0007:7012/uob_sgprod/cust/geb/wsaction, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<msg timestamp="20190730 14:01:07.752" level="INFO">${Resp} = &lt;requests.sessions.Session object at 0x00000000052B50B8&gt;</msg>
-<status status="PASS" endtime="20190730 14:01:07.752" starttime="20190730 14:01:07.751"></status>
-</kw>
-<kw name="Log" library="BuiltIn">
-<doc>Logs the given message with the given level.</doc>
-<arguments>
-<arg>${Resp}</arg>
-</arguments>
-<msg timestamp="20190730 14:01:07.752" level="INFO">&lt;requests.sessions.Session object at 0x00000000052B50B8&gt;</msg>
-<status status="PASS" endtime="20190730 14:01:07.752" starttime="20190730 14:01:07.752"></status>
-</kw>
-<status status="PASS" endtime="20190730 14:01:07.752" starttime="20190730 14:01:07.751"></status>
-</kw>
-<kw name="DualControl_ON_NEWCOMP" library="Keywords">
-<kw name="Connect To Database Using Custom Params" library="DatabaseLibrary">
-<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
-connect to the database using the map string `db_custom_param_string`.</doc>
-<arguments>
-<arg>${DB_API_Module}</arg>
-<arg>db_connect_string="${DBUsername}/${DBPassword}@${DBHost}:${DBPort}/${DBServiceName}"</arg>
-</arguments>
-<msg timestamp="20190730 14:01:07.773" level="INFO">Executing : Connect To Database Using Custom Params : cx_Oracle.connect(db_api_2.connect("uob_sg/password1@blrcssfbcc0007:1521/UOBDB")) </msg>
-<status status="PASS" endtime="20190730 14:01:19.227" starttime="20190730 14:01:07.753"></status>
-</kw>
-<kw name="Execute Sql Script" library="DatabaseLibrary">
-<doc>Executes the content of the `sqlScriptFileName` as SQL commands. Useful for setting the database to a known
-state before running your tests, or clearing out your test data after running each a test. Set optional input
-`sansTran` to True to run command without an explicit transaction commit or rollback.</doc>
-<arguments>
-<arg>${project_path}\\TestCases\\SystemFeatures\\Common\\DualControl_On_NEWCOMP.sql</arg>
-</arguments>
-<msg timestamp="20190730 14:01:19.231" level="INFO">Executing : Execute SQL Script  |  C:\UOB_API_Auto\\TestCases\SystemFeatures\Common\DualControl_On_NEWCOMP.sql </msg>
-<status status="PASS" endtime="20190730 14:01:28.109" starttime="20190730 14:01:19.228"></status>
-</kw>
-<kw name="Disconnect From Database" library="DatabaseLibrary">
-<doc>Disconnects from the database.</doc>
-<msg timestamp="20190730 14:01:28.110" level="INFO">Executing : Disconnect From Database</msg>
-<status status="PASS" endtime="20190730 14:01:28.666" starttime="20190730 14:01:28.109"></status>
-</kw>
-<status status="PASS" endtime="20190730 14:01:28.666" starttime="20190730 14:01:07.753"></status>
-</kw>
-<kw name="Mx Execute Template With Multiple Data">
-<arguments>
-<arg>Generate_CusSysF_Token</arg>
-<arg>${DataSetFile}</arg>
-<arg>sheetName=Phrases</arg>
-<arg>datarow=2</arg>
-</arguments>
-<msg timestamp="20190730 14:01:28.675" level="FAIL">No keyword with name 'Mx Execute Template With Multiple Data' found.</msg>
-<status status="FAIL" endtime="20190730 14:01:28.675" starttime="20190730 14:01:28.675"></status>
-</kw>
-<status status="FAIL" endtime="20190730 14:01:28.675" critical="yes" starttime="20190730 14:01:07.750">No keyword with name 'Mx Execute Template With Multiple Data' found.</status>
-</test>
-<status status="FAIL" endtime="20190730 14:01:28.676" starttime="20190730 14:01:06.853"></status>
-</suite>
-<statistics>
-<total>
-<stat fail="1" pass="0">Critical Tests</stat>
-<stat fail="1" pass="0">All Tests</stat>
-</total>
-<tag>
-</tag>
-<suite>
-<stat fail="1" id="s1" name="Test suite" pass="0">Test suite</stat>
-</suite>
-</statistics>
-<errors>
-</errors>
+    <suite source="C:\UOB_API_Auto\TestCases\SystemFeatures\Phrases\POST_Phrase_Save.robot" id="s1" name="Test suite">
+        <test id="s1-t1" name="Phrase_save_valid_input">
+            <kw name="APITesting_Create_Session" library="Keywords">
+                <kw name="Create Session" library="RequestsLibrary">
+                    <doc>Create Session: create a HTTP session to a server</doc>
+                    <arguments>
+                        <arg>${APISESSION}</arg>
+                        <arg>${HOST}</arg>
+                    </arguments>
+                    <assign>
+                        <var>${Resp}</var>
+                    </assign>
+                    <msg timestamp="20190730 14:01:07.751" level="INFO">Creating Session using : alias=APISESSION,
+                        url=http://blrcssfbcc0007:7012/uob_sgprod/cust/geb/wsaction, headers={}, cookies=None,
+                        auth=None, timeout=None, proxies=None, verify=False, debug=0
+                    </msg>
+                    <msg timestamp="20190730 14:01:07.752" level="INFO">${Resp} = &lt;requests.sessions.Session object
+                        at 0x00000000052B50B8&gt;
+                    </msg>
+                    <status status="PASS" endtime="20190730 14:01:07.752" starttime="20190730 14:01:07.751"></status>
+                </kw>
+                <kw name="Log" library="BuiltIn">
+                    <doc>Logs the given message with the given level.</doc>
+                    <arguments>
+                        <arg>${Resp}</arg>
+                    </arguments>
+                    <msg timestamp="20190730 14:01:07.752" level="INFO">&lt;requests.sessions.Session object at
+                        0x00000000052B50B8&gt;
+                    </msg>
+                    <status status="PASS" endtime="20190730 14:01:07.752" starttime="20190730 14:01:07.752"></status>
+                </kw>
+                <status status="PASS" endtime="20190730 14:01:07.752" starttime="20190730 14:01:07.751"></status>
+            </kw>
+            <kw name="DualControl_ON_NEWCOMP" library="Keywords">
+                <kw name="Connect To Database Using Custom Params" library="DatabaseLibrary">
+                    <doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+                        connect to the database using the map string `db_custom_param_string`.
+                    </doc>
+                    <arguments>
+                        <arg>${DB_API_Module}</arg>
+                        <arg>db_connect_string="${DBUsername}/${DBPassword}@${DBHost}:${DBPort}/${DBServiceName}"</arg>
+                    </arguments>
+                    <msg timestamp="20190730 14:01:07.773" level="INFO">Executing : Connect To Database Using Custom
+                        Params : cx_Oracle.connect(db_api_2.connect("uob_sg/password1@blrcssfbcc0007:1521/UOBDB"))
+                    </msg>
+                    <status status="PASS" endtime="20190730 14:01:19.227" starttime="20190730 14:01:07.753"></status>
+                </kw>
+                <kw name="Execute Sql Script" library="DatabaseLibrary">
+                    <doc>Executes the content of the `sqlScriptFileName` as SQL commands. Useful for setting the
+                        database to a known
+                        state before running your tests, or clearing out your test data after running each a test. Set
+                        optional input
+                        `sansTran` to True to run command without an explicit transaction commit or rollback.
+                    </doc>
+                    <arguments>
+                        <arg>${project_path}\\TestCases\\SystemFeatures\\Common\\DualControl_On_NEWCOMP.sql</arg>
+                    </arguments>
+                    <msg timestamp="20190730 14:01:19.231" level="INFO">Executing : Execute SQL Script |
+                        C:\UOB_API_Auto\\TestCases\SystemFeatures\Common\DualControl_On_NEWCOMP.sql
+                    </msg>
+                    <status status="PASS" endtime="20190730 14:01:28.109" starttime="20190730 14:01:19.228"></status>
+                </kw>
+                <kw name="Disconnect From Database" library="DatabaseLibrary">
+                    <doc>Disconnects from the database.</doc>
+                    <msg timestamp="20190730 14:01:28.110" level="INFO">Executing : Disconnect From Database</msg>
+                    <status status="PASS" endtime="20190730 14:01:28.666" starttime="20190730 14:01:28.109"></status>
+                </kw>
+                <status status="PASS" endtime="20190730 14:01:28.666" starttime="20190730 14:01:07.753"></status>
+            </kw>
+            <kw name="Mx Execute Template With Multiple Data">
+                <arguments>
+                    <arg>Generate_CusSysF_Token</arg>
+                    <arg>${DataSetFile}</arg>
+                    <arg>sheetName=Phrases</arg>
+                    <arg>datarow=2</arg>
+                </arguments>
+                <msg timestamp="20190730 14:01:28.675" level="FAIL">No keyword with name 'Mx Execute Template With
+                    Multiple Data' found.
+                </msg>
+                <status status="FAIL" endtime="20190730 14:01:28.675" starttime="20190730 14:01:28.675"></status>
+            </kw>
+            <status status="FAIL" endtime="20190730 14:01:28.675" critical="yes" starttime="20190730 14:01:07.750">No
+                keyword with name 'Mx Execute Template With Multiple Data' found.
+            </status>
+        </test>
+        <status status="FAIL" endtime="20190730 14:01:28.676" starttime="20190730 14:01:06.853"></status>
+    </suite>
+    <statistics>
+        <total>
+            <stat fail="1" pass="0">Critical Tests</stat>
+            <stat fail="1" pass="0">All Tests</stat>
+        </total>
+        <tag>
+        </tag>
+        <suite>
+            <stat fail="1" id="s1" name="Test suite" pass="0">Test suite</stat>
+        </suite>
+    </statistics>
+    <errors>
+    </errors>
 </robot>
