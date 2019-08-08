@@ -74,27 +74,27 @@ tr:nth-child(odd) {
 
     <!-- Header -->
     <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> Overview Dashboard</b></h5>
+        <h5><b><i class="fa fa-dashboard"></i> Term Deposit Dashboard</b></h5>
     </header>
 
     <div class="row">
         <div>
             <div style="float:left; width:25%; height:100%; margin-right: -25px;">
                 <div class="w3-card-4"
-                     style="border-radius: 50%; width: 100px; height: 100px; background: green; margin-left: 70px; text-align: center; line-height: 95px">
+                     style="border-radius: 50%; width: 100px; height: 100px; background: red; margin-left: 70px; text-align: center; line-height: 95px">
                     <strong>Status</strong></div>
             </div>
             <div style="width: 75%; float: right; height:100%; margin-right: 10px;">
                 <h5></h5>
-                Total Pass : 74.074%
+                Total Pass : 44.444%
                 <div class="w3-grey">
-                    <div class="w3-container w3-center w3-padding w3-green" style="width:74.074%"/>
+                    <div class="w3-container w3-center w3-padding w3-green" style="width:44.444%"/>
                 </div>
         </div>
         <br>
-        Total Failed : 25.926%
+        Total Failed : 55.556%
             <div class="w3-grey">
-                <div class="w3-container w3-center w3-padding w3-red" style="width:25.926%"/>
+                <div class="w3-container w3-center w3-padding w3-red" style="width:55.556%"/>
             </div>
 </div>
 <br>
@@ -112,16 +112,16 @@ tr:nth-child(odd) {
                 <th>Total</th>
             </tr>
             <tr class="w3-hover-green">
-                <td>Fund Transfer</td>
-                <td>6</td>
-                <td>0</td>
-                <td>6</td>
+                <td>Fixed Deposit</td>
+                <td>4</td>
+                <td>1</td>
+                <td>5</td>
             </tr>
             <tr class="w3-hover-green">
-                <td>Term Deposit</td>
+                <td>TD Sub Product</td>
+                <td>0</td>
                 <td>4</td>
-                <td>5</td>
-                <td>9</td>
+                <td>4</td>
             </tr>
         </table>
     </div>
@@ -162,8 +162,8 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
   ['Sub-product Code', 'Test run'],
-   ['Fund Transfer', 6],
-   ['Term Deposit', 9],
+   ['Fixed Deposit', 5],
+   ['TD Sub Product', 4],
 ]);
 
   // Optional; add a title and set the width and height of the chart
