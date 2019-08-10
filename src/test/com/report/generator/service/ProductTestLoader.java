@@ -11,7 +11,7 @@ import static com.report.generator.constants.PercentageType.PASS_PERCENT;
 import static com.report.generator.util.AppUtils.getPercentage;
 import static com.report.generator.util.AppUtils.sanitize;
 
-public class ProductStaticBuilder implements ProductBuilder {
+public class ProductTestLoader implements ProductBuilder {
 
     @Override
     public Product buildOverview(Product ftRecord, Product sysFeatures, Product termDeposit) {
@@ -28,7 +28,6 @@ public class ProductStaticBuilder implements ProductBuilder {
 
         List<Product> subproductList = new ArrayList<>();
         subproductList.add(ftRecord);
-        //subproductList.add(sysFeatures);
         subproductList.add(termDeposit);
         overviewRecord.setSubProducts(subproductList);
         return overviewRecord;
