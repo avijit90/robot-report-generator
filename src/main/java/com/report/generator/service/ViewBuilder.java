@@ -13,14 +13,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 
+import static com.report.generator.constants.ApplicationConstants.*;
 import static com.report.generator.util.AppUtils.sanitize;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class ViewBuilder {
-
-    public static final String HTML = ".html";
-    public static final String UNDERSCORE = "_";
-    public static final String OUTPUT_DIRECTORY = "./src/main/resources/output/";
 
     public void addStaticValuesToRoot(Map root) {
         root.put("path_to_Report", "./../report.html");
