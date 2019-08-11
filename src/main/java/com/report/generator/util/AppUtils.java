@@ -5,7 +5,7 @@ import com.report.generator.model.Product;
 
 public class AppUtils {
 
-    public static Double getPercentage(Product product, PercentageType percentageType) {
+    public static Double calculatePercentage(Product product, PercentageType percentageType) {
 
         Double percentage;
         switch (percentageType) {

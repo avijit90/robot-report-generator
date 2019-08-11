@@ -8,7 +8,7 @@ import java.util.List;
 
 import static com.report.generator.constants.PercentageType.FAIL_PERCENT;
 import static com.report.generator.constants.PercentageType.PASS_PERCENT;
-import static com.report.generator.util.AppUtils.getPercentage;
+import static com.report.generator.util.AppUtils.calculatePercentage;
 import static com.report.generator.util.AppUtils.sanitize;
 
 public class ProductTestLoader implements ProductBuilder {
@@ -20,8 +20,8 @@ public class ProductTestLoader implements ProductBuilder {
         overviewRecord.setPass(20D);
         overviewRecord.setFail(7D);
         overviewRecord.setTotal();
-        overviewRecord.setFailPercent(getPercentage(overviewRecord, FAIL_PERCENT));
-        overviewRecord.setPassPercent(getPercentage(overviewRecord, PASS_PERCENT));
+        overviewRecord.setFailPercent(calculatePercentage(overviewRecord, FAIL_PERCENT));
+        overviewRecord.setPassPercent(calculatePercentage(overviewRecord, PASS_PERCENT));
         StatusColor status = StatusColor.getStatusFromPercentage(overviewRecord.getPassPercent());
         overviewRecord.setStatus(status.getColor());
         overviewRecord.setDetailView(sanitize(overviewRecord.getName()) + ".html");
@@ -41,8 +41,8 @@ public class ProductTestLoader implements ProductBuilder {
         termDeposit.setPass(4D);
         termDeposit.setFail(5D);
         termDeposit.setTotal();
-        termDeposit.setFailPercent(getPercentage(termDeposit, FAIL_PERCENT));
-        termDeposit.setPassPercent(getPercentage(termDeposit, PASS_PERCENT));
+        termDeposit.setFailPercent(calculatePercentage(termDeposit, FAIL_PERCENT));
+        termDeposit.setPassPercent(calculatePercentage(termDeposit, PASS_PERCENT));
         termDeposit.setDetailView(sanitize(termDeposit.getName()) + ".html");
 
         Product fd = new Product();
@@ -51,8 +51,8 @@ public class ProductTestLoader implements ProductBuilder {
         fd.setPass(4D);
         fd.setFail(1D);
         fd.setTotal();
-        fd.setFailPercent(getPercentage(fd, FAIL_PERCENT));
-        fd.setPassPercent(getPercentage(fd, PASS_PERCENT));
+        fd.setFailPercent(calculatePercentage(fd, FAIL_PERCENT));
+        fd.setPassPercent(calculatePercentage(fd, PASS_PERCENT));
         fd.setDetailView(sanitize(fd.getName()) + ".html");
 
         Product td = new Product();
@@ -61,8 +61,8 @@ public class ProductTestLoader implements ProductBuilder {
         td.setPass(0D);
         td.setFail(4D);
         td.setTotal();
-        td.setFailPercent(getPercentage(td, FAIL_PERCENT));
-        td.setPassPercent(getPercentage(td, PASS_PERCENT));
+        td.setFailPercent(calculatePercentage(td, FAIL_PERCENT));
+        td.setPassPercent(calculatePercentage(td, PASS_PERCENT));
         td.setDetailView(sanitize(td.getName()) + ".html");
 
         List<Product> subproducts = new ArrayList<>();
@@ -81,8 +81,8 @@ public class ProductTestLoader implements ProductBuilder {
         sysFeatures.setPass(10D);
         sysFeatures.setFail(2D);
         sysFeatures.setTotal();
-        sysFeatures.setFailPercent(getPercentage(sysFeatures, FAIL_PERCENT));
-        sysFeatures.setPassPercent(getPercentage(sysFeatures, PASS_PERCENT));
+        sysFeatures.setFailPercent(calculatePercentage(sysFeatures, FAIL_PERCENT));
+        sysFeatures.setPassPercent(calculatePercentage(sysFeatures, PASS_PERCENT));
         sysFeatures.setDetailView(sanitize(sysFeatures.getName()) + ".html");
         return sysFeatures;
     }
@@ -95,8 +95,8 @@ public class ProductTestLoader implements ProductBuilder {
         ftRecord.setPass(6D);
         ftRecord.setFail(0D);
         ftRecord.setTotal();
-        ftRecord.setFailPercent(getPercentage(ftRecord, FAIL_PERCENT));
-        ftRecord.setPassPercent(getPercentage(ftRecord, PASS_PERCENT));
+        ftRecord.setFailPercent(calculatePercentage(ftRecord, FAIL_PERCENT));
+        ftRecord.setPassPercent(calculatePercentage(ftRecord, PASS_PERCENT));
         ftRecord.setDetailView(sanitize(ftRecord.getName()) + ".html");
 
         Product mt103 = new Product();
@@ -105,8 +105,8 @@ public class ProductTestLoader implements ProductBuilder {
         mt103.setPass(2D);
         mt103.setFail(0D);
         mt103.setTotal();
-        mt103.setFailPercent(getPercentage(mt103, FAIL_PERCENT));
-        mt103.setPassPercent(getPercentage(mt103, PASS_PERCENT));
+        mt103.setFailPercent(calculatePercentage(mt103, FAIL_PERCENT));
+        mt103.setPassPercent(calculatePercentage(mt103, PASS_PERCENT));
         mt103.setDetailView(sanitize(mt103.getName()) + ".html");
 
         Product fast = new Product();
@@ -115,8 +115,8 @@ public class ProductTestLoader implements ProductBuilder {
         fast.setPass(4D);
         fast.setFail(0D);
         fast.setTotal();
-        fast.setFailPercent(getPercentage(fast, FAIL_PERCENT));
-        fast.setPassPercent(getPercentage(fast, PASS_PERCENT));
+        fast.setFailPercent(calculatePercentage(fast, FAIL_PERCENT));
+        fast.setPassPercent(calculatePercentage(fast, PASS_PERCENT));
         fast.setDetailView(sanitize(fast.getName()) + ".html");
 
         List<Product> subproducts = new ArrayList<>();
