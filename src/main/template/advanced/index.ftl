@@ -13570,7 +13570,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   height: 1rem;
   overflow: hidden;
   font-size: 0.75rem;
-  background-color: #fe7c96;
+  background-color: #e0f2ed;
   border-radius: 0.25rem;
 }
 
@@ -20093,7 +20093,7 @@ code {
 .progress {
   border-radius: 8px;
   height: 16px;
-  border: solid;
+  border: solid 0.5px;
 }
 
 .progress .progress-bar {
@@ -22062,12 +22062,14 @@ dl li {
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
                 </li>
+                <li class="nav-item">
+                </li>
                 <li class="nav-item sidebar-actions">
                     <span class="nav-link">
-                        <div class="border-bottom">
-                            <h6 class="font-weight-normal mb-3">Tools</h6>
-                        </div>
-                        <button class="btn btn-block btn-lg btn-gradient-primary mt-4">Export To PDF</button>
+                    <div class="border-bottom">
+                        <h6 class="font-weight-normal mb-3">Tools</h6>
+                    </div>
+                    <button class="btn btn-block btn-lg btn-gradient-primary mt-4">Export To PDF</button>
                     </span>
                 </li>
             </ul>
@@ -22105,10 +22107,8 @@ dl li {
                                     <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                                 </h4>
                                 <h2 class="mb-5">${product.total}</h2>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar"
-                                         style="width: ${product.passPercent}%" aria-valuenow="75" aria-valuemin="0"
-                                         aria-valuemax="100"></div>
+                                <div style="margin-top: -222px; float: right;">
+                                    <canvas id="total-status-gauge" width="250" height="250"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -22148,7 +22148,7 @@ dl li {
                                             </td>
                                             <td>
                                                 <div class="progress">
-                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                    <div class="progress-bar bg-warning" role="progressbar"
                                                          style="width: ${subproduct.passPercent}%" aria-valuenow="${subproduct.passPercent}" aria-valuemin="0"
                                                          aria-valuemax="100"></div>
                                                 </div>
@@ -22164,42 +22164,6 @@ dl li {
                                             </td>
                                         </tr>
                                     </#list>
-                                    <tr>
-                                        <td class="py-1">
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                     style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                     style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                     style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                     style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 65%"
-                                                     aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -22349,6 +22313,103 @@ dl li {
        }
      });
 
+</script>
+<script type="text/javascript">
+
+$.fn.gauge = function(value, options) {
+    return this.each(function() {
+
+      var settings = $.extend({
+        min: 0,
+        max: 100,
+        unit: "%",
+        color: "#fffefc",
+        colorAlpha: 1,
+        bgcolor: "#ff0055",
+        type: "default"
+      }, options);
+
+      //canvas initialization
+      var ctx = this.getContext("2d");
+
+      var W = this.width;
+      var H = this.height;
+      var centerW = (W/2);
+
+      var position = 0;
+      var new_position = 0;
+      var difference = 0;
+
+      var text;
+      var animation_loop, redraw_loop;
+
+      // Angle in radians = angle in degrees * PI / 180
+      function radians(degrees) {
+        return degrees * Math.PI / 180;
+      }
+
+      if (settings.type === "halfcircle") {
+        (function() {
+          function update() {
+            ctx.clearRect(0, 0, W, H);
+
+            // The gauge will be an arc
+            ctx.beginPath();
+            ctx.strokeStyle = settings.bgcolor;
+            ctx.lineWidth = W * 0.13;
+            ctx.arc(centerW, H, (centerW) - ctx.lineWidth, radians(180), radians(0), false);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = settings.color;
+            ctx.lineWidth = W * 0.13;
+
+            if (position > 0) {
+              ctx.arc(centerW, H, (centerW) - ctx.lineWidth, radians(180), radians(180 + position), false);
+              ctx.stroke();
+            }
+
+            // Add the text
+            ctx.fillStyle = settings.color;
+						var fontArgs = ctx.font.split(' ');
+						ctx.font = (W*0.16) + ' ' + fontArgs[fontArgs.length - 1];
+            text = value + settings.unit + ' Passed';
+            // Center the text, deducting half of text width from position x
+            text_width = ctx.measureText(text).width;
+            ctx.fillText(text, centerW - text_width / 2, H - 10);
+          }
+
+          function draw() {
+            // Cancel any animation if a new chart is requested
+            if (typeof animation_loop !== undefined) clearInterval(animation_loop);
+
+            new_position = Math.round((value / (settings.max - settings.min)) * 180);
+            difference = new_position - position;
+            animation_loop = setInterval(animate_to, 100 / difference);
+          }
+
+          // Make the chart move to new degrees
+          function animate_to() {
+            // Clear animation loop if degrees reaches the new_degrees
+            if (position == new_position)
+              clearInterval(animation_loop);
+
+            if (position < new_position)
+              position++;
+            else
+              position--;
+
+            update();
+          }
+          draw();
+        })();
+      }
+    });
+  };
+
+$(document).ready(function (){
+	$("#total-status-gauge").gauge(${product.passPercent}, { type: "halfcircle"});
+});
 </script>
 <!-- End custom js for this page-->
 </body>

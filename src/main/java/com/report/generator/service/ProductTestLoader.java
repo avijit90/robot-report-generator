@@ -29,6 +29,7 @@ public class ProductTestLoader implements ProductBuilder {
         List<Product> subproductList = new ArrayList<>();
         subproductList.add(ftRecord);
         subproductList.add(termDeposit);
+        subproductList.add(sysFeatures);
         overviewRecord.setSubProducts(subproductList);
         return overviewRecord;
     }
