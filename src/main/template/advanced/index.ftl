@@ -13570,7 +13570,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   height: 1rem;
   overflow: hidden;
   font-size: 0.75rem;
-  background-color: #e9ecef;
+  background-color: #fe7c96;
   border-radius: 0.25rem;
 }
 
@@ -20091,8 +20091,9 @@ code {
 
 /* Bootstrap Progress */
 .progress {
-  border-radius: 3px;
-  height: 8px;
+  border-radius: 8px;
+  height: 16px;
+  border: solid;
 }
 
 .progress .progress-bar {
@@ -22061,19 +22062,13 @@ dl li {
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">
-                        <span class="menu-title">Download PDF</span>
-                        <i class="mdi mdi-home menu-icon"></i>
-                    </a>
-                </li>
                 <li class="nav-item sidebar-actions">
-            <span class="nav-link">
-              <div class="border-bottom">
-                <h6 class="font-weight-normal mb-3">Tools</h6>
-              </div>
-              <button class="btn btn-block btn-lg btn-gradient-primary mt-4">Export To PDF</button>
-            </span>
+                    <span class="nav-link">
+                        <div class="border-bottom">
+                            <h6 class="font-weight-normal mb-3">Tools</h6>
+                        </div>
+                        <button class="btn btn-block btn-lg btn-gradient-primary mt-4">Export To PDF</button>
+                    </span>
                 </li>
             </ul>
         </nav>
@@ -22087,8 +22082,8 @@ dl li {
                                 <h4 class="font-weight-normal mb-3">Pass Percentage
                                     <i class="mdi mdi-diamond mdi-24px float-right"></i>
                                 </h4>
-                                <h2 class="mb-5">79 %</h2>
-                                <h6 class="card-text">Total tests passed : 60</h6>
+                                <h2 class="mb-5">${product.passPercent} %</h2>
+                                <h6 class="card-text">Total tests passed : ${product.pass}</h6>
                             </div>
                         </div>
                     </div>
@@ -22098,8 +22093,8 @@ dl li {
                                 <h4 class="font-weight-normal mb-3">Fail Percentage
                                     <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                                 </h4>
-                                <h2 class="mb-5">21 %</h2>
-                                <h6 class="card-text">Total tests failed : 15</h6>
+                                <h2 class="mb-5">${product.failPercent} %</h2>
+                                <h6 class="card-text">Total tests failed : ${product.fail}</h6>
                             </div>
                         </div>
                     </div>
@@ -22109,8 +22104,12 @@ dl li {
                                 <h4 class="font-weight-normal mb-3">Total Tests Executed
                                     <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                                 </h4>
-                                <h2 class="mb-5">75</h2>
-                                <h6 class="card-text"></h6>
+                                <h2 class="mb-5">${product.total}</h2>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                         style="width: ${product.passPercent}%" aria-valuenow="75" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
