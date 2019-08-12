@@ -3,8 +3,8 @@
     <title>Welcome!</title>
 </head>
 <body>
-<h1>Welcome ${productCode.name}!</h1>
+<h1>Welcome </h1>
 <p>Our latest product:
-    <a href="${productCode.detailView}">${productCode.passPercent}</a>!
+    <a href="hello"">labels: [<#list product.subproducts as subproduct>${subproduct.name}<#sep>, </#list>]</a>
 </body>
 </html>
