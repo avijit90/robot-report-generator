@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Consolidated Report</title>
     <link rel="shortcut icon" href="images/favicon.png"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         /*------------------------------------------------------------------
  [Master Stylesheet]
@@ -13570,7 +13571,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   height: 1rem;
   overflow: hidden;
   font-size: 0.75rem;
-  background-color: white;
+  background-color: #e0f2ed;
   border-radius: 0.25rem;
 }
 
@@ -14648,6 +14649,27 @@ a.close.disabled {
   .carousel-indicators li {
     transition: none;
   }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-pointer:hover {
+    background: #d6eaf8 !important;
+}
+
+.cursor-pointer-icon {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.cursor-pointer-icon:hover {
+    transform: scale(2.5);
+}
+
+.color-black:hover{
+   color: black;
 }
 
 .carousel-indicators .active {
@@ -20092,8 +20114,8 @@ code {
 /* Bootstrap Progress */
 .progress {
   border-radius: 4px;
-  height: 8px;
-  border: solid 0.5px
+  height: 10px;
+  border: solid 0.5px;
 }
 
 .progress .progress-bar {
@@ -22036,12 +22058,7 @@ dl li {
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item d-none d-lg-block full-screen-link">
                     <a class="nav-link">
-                        <i class="mdi mdi-fullscreen" id="fullscreen-button">FullScreen</i>
-                    </a>
-                </li>
-                <li class="nav-item nav-logout d-none d-lg-block">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-power">Power Off</i>
+                        <i class="large material-icons cursor-pointer-icon color-black" id="fullscreen-button">fullscreen</i>
                     </a>
                 </li>
             </ul>
@@ -22056,10 +22073,10 @@ dl li {
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
-                <li class="nav-item">
+                <li class="nav-item cursor-pointer">
                     <a class="nav-link" href="index.html">
                         <span class="menu-title">Dashboard</span>
-                        <i class="mdi mdi-home menu-icon"></i>
+                        <i style="margin-left: 20px" class="material-icons">home</i>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -22084,8 +22101,8 @@ dl li {
                                 <h4 class="font-weight-normal mb-3">Pass Percentage
                                     <i class="mdi mdi-diamond mdi-24px float-right"></i>
                                 </h4>
-                                <h2 class="mb-5">79 %</h2>
-                                <h6 class="card-text">Total tests passed : 60</h6>
+                                <h2 class="mb-5">74.074 %</h2>
+                                <h6 class="card-text">Total tests passed : 20</h6>
                             </div>
                         </div>
                     </div>
@@ -22095,8 +22112,8 @@ dl li {
                                 <h4 class="font-weight-normal mb-3">Fail Percentage
                                     <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                                 </h4>
-                                <h2 class="mb-5">21 %</h2>
-                                <h6 class="card-text">Total tests failed : 15</h6>
+                                <h2 class="mb-5">25.926 %</h2>
+                                <h6 class="card-text">Total tests failed : 7</h6>
                             </div>
                         </div>
                     </div>
@@ -22106,9 +22123,9 @@ dl li {
                                 <h4 class="font-weight-normal mb-3">Total Tests Executed
                                     <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                                 </h4>
-                                <h2 class="mb-5">75</h2>
-                                <div style="margin-top: -132px; float: right;">
-                                    <canvas id="gauge1" width="150" height="150"></canvas>
+                                <h2 class="mb-5">27</h2>
+                                <div style="margin-top: -200px; float: right;">
+                                    <canvas id="total-status-gauge" width="200" height="200"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -22143,80 +22160,65 @@ dl li {
                                     <tbody>
                                     <tr>
                                         <td class="py-1">
-                                            FT
+                                            Fund Transfer
                                         </td>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                     style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+                                                <div class="progress-bar bg-info" role="progressbar"
+                                                     style="width: 100%" aria-valuenow="100" aria-valuemin="0"
                                                      aria-valuemax="100"></div>
                                             </div>
                                         </td>
                                         <td>
-                                            15
+                                            6
                                         </td>
                                         <td>
-                                            3
+                                            0
                                         </td>
                                         <td>
-                                            18
+                                            6
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="py-1">
+                                            Term Deposit
+                                        </td>
+                                        <td>
                                             <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                     style="width: 75%" aria-valuenow="75" aria-valuemin="0"
+                                                <div class="progress-bar bg-dark" role="progressbar"
+                                                     style="width: 44.444%" aria-valuenow="44.444" aria-valuemin="0"
                                                      aria-valuemax="100"></div>
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                     style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                     style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                     style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 65%"
-                                                     aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            TD
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                     style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
+                                            4
                                         </td>
                                         <td>
                                             5
                                         </td>
                                         <td>
-                                            17
+                                            9
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1">
+                                            System Features
                                         </td>
                                         <td>
-                                            22
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar"
+                                                     style="width: 83.333%" aria-valuenow="83.333" aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            12
                                         </td>
                                     </tr>
                                     </tbody>
@@ -22234,9 +22236,6 @@ dl li {
                             </div>
                         </div>
                     </div>
-                    <!--<div class="row">
-                        <canvas id="gauge1" width="150" height="150"></canvas>
-                    </div>-->
                 </div>
             </div>
             <!-- content-wrapper ends -->
@@ -22290,90 +22289,86 @@ dl li {
           }
         })
 
-    /*This is Doughnut*/
-    if ($("#product-coverage").length) {
-      var ctx = document.getElementById('product-coverage').getContext("2d")
+   /*This is Doughnut*/
+       if ($("#product-coverage").length) {
+         var ctx = document.getElementById('product-coverage').getContext("2d")
 
-      var gradientStrokeBlue = ctx.createLinearGradient(0, 0, 0, 181);
-      gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
-      gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
-      var gradientLegendBlue = 'linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))';
+         var gradientStrokeBlue = ctx.createLinearGradient(0, 0, 0, 181);
+         gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
+         gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
+         var gradientLegendBlue = 'linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))';
 
-      var gradientStrokeRed = ctx.createLinearGradient(0, 0, 0, 50);
-      gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
-      gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
-      var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
+         var gradientStrokeRed = ctx.createLinearGradient(0, 0, 0, 50);
+         gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
+         gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
+         var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
 
-      var gradientStrokeGreen = ctx.createLinearGradient(0, 0, 0, 300);
-      gradientStrokeGreen.addColorStop(0, 'rgba(6, 185, 157, 1)');
-      gradientStrokeGreen.addColorStop(1, 'rgba(132, 217, 210, 1)');
-      var gradientLegendGreen = 'linear-gradient(to right, rgba(6, 185, 157, 1), rgba(132, 217, 210, 1))';
+         var gradientStrokeGreen = ctx.createLinearGradient(0, 0, 0, 300);
+         gradientStrokeGreen.addColorStop(0, 'rgba(6, 185, 157, 1)');
+         gradientStrokeGreen.addColorStop(1, 'rgba(132, 217, 210, 1)');
+         var gradientLegendGreen = 'linear-gradient(to right, rgba(6, 185, 157, 1), rgba(132, 217, 210, 1))';
 
-      var trafficChartData = {
-        datasets: [{
-          data: [10, 15, 13],
-          backgroundColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed
-          ],
-          hoverBackgroundColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed
-          ],
-          borderColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed
-          ],
-          legendColor: [
-            gradientLegendBlue,
-            gradientLegendGreen,
-            gradientLegendRed
-          ]
-        }],
+         var trafficChartData = {
+           datasets: [{
+             data: [6, 9, 12],
+             backgroundColor: [
+               gradientStrokeBlue,
+               gradientStrokeGreen,
+               gradientStrokeRed
+             ],
+             hoverBackgroundColor: [
+               gradientStrokeBlue,
+               gradientStrokeGreen,
+               gradientStrokeRed
+             ],
+             borderColor: [
+               gradientStrokeBlue,
+               gradientStrokeGreen,
+               gradientStrokeRed
+             ],
+             legendColor: [
+               gradientLegendBlue,
+               gradientLegendGreen,
+               gradientLegendRed
+             ]
+           }],
 
-        // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: [
-          'Search Engines',
-          'Direct Click',
-          'Bookmarks Click',
-        ]
-      };
-      var trafficChartOptions = {
-        responsive: true,
-        animation: {
-          animateScale: true,
-          animateRotate: true
-        },
-        legend: false,
-        legendCallback: function(chart) {
-          var text = [];
-          text.push('<ul>');
-          for (var i = 0; i < trafficChartData.datasets[0].data.length; i++) {
-              text.push('<li><span class="legend-dots" style="background:' +
-              trafficChartData.datasets[0].legendColor[i] +
-                          '"></span>');
-              if (trafficChartData.labels[i]) {
-                  text.push(trafficChartData.labels[i]);
-              }
-              text.push('<span class="float-right">'+trafficChartData.datasets[0].data[i]+"%"+'</span>')
-              text.push('</li>');
-          }
-          text.push('</ul>');
-          return text.join('');
-        }
-      };
-      var trafficChartCanvas = $("#product-coverage").get(0).getContext("2d");
-      var trafficChart = new Chart(trafficChartCanvas, {
-        type: 'doughnut',
-        data: trafficChartData,
-        options: trafficChartOptions
-      });
-      $("#product-coverage-legend").html(trafficChart.generateLegend());
-    }
-  });
+           // These labels appear in the legend and in the tooltips when hovering different arcs
+           labels: ['Fund Transfer', 'Term Deposit', 'System Features']
+         };
+         var trafficChartOptions = {
+           responsive: true,
+           animation: {
+             animateScale: true,
+             animateRotate: true
+           },
+           legend: false,
+           legendCallback: function(chart) {
+             var text = [];
+             text.push('<ul>');
+             for (var i = 0; i < trafficChartData.datasets[0].data.length; i++) {
+                 text.push('<li><span class="legend-dots" style="background:' +
+                 trafficChartData.datasets[0].legendColor[i] +
+                             '"></span>');
+                 if (trafficChartData.labels[i]) {
+                     text.push(trafficChartData.labels[i]);
+                 }
+                 text.push('<span class="float-right">'+trafficChartData.datasets[0].data[i]+'</span>')
+                 text.push('</li>');
+             }
+             text.push('</ul>');
+             return text.join('');
+           }
+         };
+         var trafficChartCanvas = $("#product-coverage").get(0).getContext("2d");
+         var trafficChart = new Chart(trafficChartCanvas, {
+           type: 'doughnut',
+           data: trafficChartData,
+           options: trafficChartOptions
+         });
+         $("#product-coverage-legend").html(trafficChart.generateLegend());
+       }
+     });
 
 </script>
 <script type="text/javascript">
@@ -22385,9 +22380,9 @@ $.fn.gauge = function(value, options) {
         min: 0,
         max: 100,
         unit: "%",
-        color: "green",
+        color: "#fffefc",
         colorAlpha: 1,
-        bgcolor: "red",
+        bgcolor: "#ff0055",
         type: "default"
       }, options);
 
@@ -22435,7 +22430,7 @@ $.fn.gauge = function(value, options) {
             ctx.fillStyle = settings.color;
 						var fontArgs = ctx.font.split(' ');
 						ctx.font = (W*0.16) + ' ' + fontArgs[fontArgs.length - 1];
-            text = value + settings.unit;
+            text = value + settings.unit + ' Passed';
             // Center the text, deducting half of text width from position x
             text_width = ctx.measureText(text).width;
             ctx.fillText(text, centerW - text_width / 2, H - 10);
@@ -22470,7 +22465,7 @@ $.fn.gauge = function(value, options) {
   };
 
 $(document).ready(function (){
-	$("#gauge1").gauge(75, { type: "halfcircle"});
+	$("#total-status-gauge").gauge(74.074, { type: "halfcircle"});
 });
 </script>
 <!-- End custom js for this page-->

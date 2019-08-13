@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Consolidated Report</title>
     <link rel="shortcut icon" href="images/favicon.png"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         /*------------------------------------------------------------------
  [Master Stylesheet]
@@ -14650,6 +14651,27 @@ a.close.disabled {
   }
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-pointer:hover {
+    background: #d6eaf8 !important;
+}
+
+.cursor-pointer-icon {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.cursor-pointer-icon:hover {
+    transform: scale(2.5);
+}
+
+.color-black:hover{
+   color: black;
+}
+
 .carousel-indicators .active {
   opacity: 1;
 }
@@ -20091,8 +20113,8 @@ code {
 
 /* Bootstrap Progress */
 .progress {
-  border-radius: 8px;
-  height: 16px;
+  border-radius: 4px;
+  height: 10px;
   border: solid 0.5px;
 }
 
@@ -21936,7 +21958,7 @@ dl li {
   border-top: 0;
   border-bottom-width: 1px;
   font-family: "ubuntu-medium", sans-serif;
-  font-weight: initial;
+  font-weight: bold;
 }
 
 .table thead th i {
@@ -22028,21 +22050,16 @@ dl li {
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <!--<div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
             <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.svg" alt="logo"/></a>
             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
-        </div>
+        </div>-->
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item d-none d-lg-block full-screen-link">
-                    <a class="nav-link">
-                        <i class="mdi mdi-fullscreen" id="fullscreen-button">FullScreen</i>
-                    </a>
-                </li>
-                <li class="nav-item nav-logout d-none d-lg-block">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-power">Power Off</i>
-                    </a>
+                        <a class="nav-link">
+                            <i class="large material-icons cursor-pointer-icon color-black" id="fullscreen-button">fullscreen</i>
+                        </a>
                 </li>
             </ul>
             <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -22056,14 +22073,21 @@ dl li {
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">
+                <li class="nav-item cursor-pointer">
+                    <a class="nav-link" href="Overview.html">
                         <span class="menu-title">Dashboard</span>
-                        <i class="mdi mdi-home menu-icon"></i>
+                        <i style="margin-left: 20px" class="material-icons">home</i>
                     </a>
                 </li>
-                <li class="nav-item">
-                </li>
+
+                <#list product.subproducts as subproduct>
+                    <li class="nav-item cursor-pointer">
+                        <a class="nav-link" href="${subproduct.detailView}">
+                            <span class="menu-title">${subproduct.name}</span>
+                        </a>
+                    </li>
+                </#list>
+
                 <li class="nav-item sidebar-actions">
                     <span class="nav-link">
                     <div class="border-bottom">
@@ -22107,14 +22131,24 @@ dl li {
                                     <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                                 </h4>
                                 <h2 class="mb-5">${product.total}</h2>
-                                <div style="margin-top: -222px; float: right;">
-                                    <canvas id="total-status-gauge" width="250" height="250"></canvas>
+                                <div style="margin-top: -185px; float: right;">
+                                    <canvas id="total-status-gauge" width="200" height="200"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-5 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Product Coverage</h4>
+                                <canvas id="product-coverage"></canvas>
+                                <div id="product-coverage-legend"
+                                     class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-7 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
@@ -22142,40 +22176,30 @@ dl li {
                                     </thead>
                                     <tbody>
                                     <#list product.subproducts as subproduct>
-                                        <tr>
-                                            <td class="py-1">
-                                                ${subproduct.name}
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-warning" role="progressbar"
-                                                         style="width: ${subproduct.passPercent}%" aria-valuenow="${subproduct.passPercent}" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                ${subproduct.pass}
-                                            </td>
-                                            <td>
-                                                ${subproduct.fail}
-                                            </td>
-                                            <td>
-                                                ${subproduct.total}
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="py-1">
+                                            ${subproduct.name}
+                                        </td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar ${subproduct.progressBarStyle}" role="progressbar"
+                                                     style="width: ${subproduct.passPercent}%" aria-valuenow="${subproduct.passPercent}" aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            ${subproduct.pass}
+                                        </td>
+                                        <td>
+                                            ${subproduct.fail}
+                                        </td>
+                                        <td>
+                                            ${subproduct.total}
+                                        </td>
+                                    </tr>
                                     </#list>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Product Coverage</h4>
-                                <canvas id="product-coverage"></canvas>
-                                <div id="product-coverage-legend"
-                                     class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
                             </div>
                         </div>
                     </div>
@@ -22236,48 +22260,42 @@ dl li {
        if ($("#product-coverage").length) {
          var ctx = document.getElementById('product-coverage').getContext("2d")
 
-         var gradientStrokeBlue = ctx.createLinearGradient(0, 0, 0, 181);
-         gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
-         gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
-         var gradientLegendBlue = 'linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))';
+         <#list product.subproducts as subproduct>
+		var gradientStroke${subproduct.name?replace(" ", "")} = ctx.createLinearGradient(0, 0, 0, 200);
+		gradientStroke${subproduct.name?replace(" ", "")}.addColorStop(0, '${subproduct.firstCoverageColor}');
+		gradientStroke${subproduct.name?replace(" ", "")}.addColorStop(1, '${subproduct.secondCoverageColor}');
+		var gradientLegend${subproduct.name?replace(" ", "")} = 'linear-gradient(to right, ${subproduct.firstCoverageColor}, ${subproduct.secondCoverageColor})';
 
-         var gradientStrokeRed = ctx.createLinearGradient(0, 0, 0, 50);
-         gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
-         gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
-         var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
-
-         var gradientStrokeGreen = ctx.createLinearGradient(0, 0, 0, 300);
-         gradientStrokeGreen.addColorStop(0, 'rgba(6, 185, 157, 1)');
-         gradientStrokeGreen.addColorStop(1, 'rgba(132, 217, 210, 1)');
-         var gradientLegendGreen = 'linear-gradient(to right, rgba(6, 185, 157, 1), rgba(132, 217, 210, 1))';
+         </#list>
 
          var trafficChartData = {
            datasets: [{
-             data: [<#list product.subproducts as subproduct>${subproduct.total}<#sep>, </#list>],
-             backgroundColor: [
-               gradientStrokeBlue,
-               gradientStrokeGreen,
-               gradientStrokeRed
-             ],
-             hoverBackgroundColor: [
-               gradientStrokeBlue,
-               gradientStrokeGreen,
-               gradientStrokeRed
-             ],
-             borderColor: [
-               gradientStrokeBlue,
-               gradientStrokeGreen,
-               gradientStrokeRed
-             ],
-             legendColor: [
-               gradientLegendBlue,
-               gradientLegendGreen,
-               gradientLegendRed
-             ]
+             data: [6, 9, 12],
+				 backgroundColor: [
+				    <#list product.subproducts as subproduct>
+				        gradientStroke${subproduct.name?replace(" ", "")}<#sep>,
+				    </#list>
+				 ],
+				 hoverBackgroundColor: [
+				   <#list product.subproducts as subproduct>
+				        gradientStroke${subproduct.name?replace(" ", "")}<#sep>,
+				    </#list>
+				 ],
+				 borderColor: [
+				   <#list product.subproducts as subproduct>
+				        gradientStroke${subproduct.name?replace(" ", "")}<#sep>,
+				    </#list>
+				 ],
+				 legendColor: [
+				    <#list product.subproducts as subproduct>
+				        gradientLegend${subproduct.name?replace(" ", "")}<#sep>,
+				    </#list>
+				 ]
+
            }],
 
            // These labels appear in the legend and in the tooltips when hovering different arcs
-           labels: [<#list product.subproducts as subproduct>'${subproduct.name}'<#sep>, </#list>]
+           labels: ['Fund Transfer', 'Term Deposit', 'System Features']
          };
          var trafficChartOptions = {
            responsive: true,
