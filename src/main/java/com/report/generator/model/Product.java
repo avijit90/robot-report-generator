@@ -12,6 +12,9 @@ public class Product {
     public Double failPercent;
     public Double total;
     public String status;
+    public String progressBarStyle;
+    public String firstCoverageColor;
+    public String secondCoverageColor;
     public List<Product> subproducts;
 
     public void setDetailView(String detailView) {
@@ -86,4 +89,35 @@ public class Product {
         this.status = status;
     }
 
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public String getProgressBarStyle() {
+        return progressBarStyle;
+    }
+
+    public void setProgressBarStyle(String progressBarStyle) {
+        this.progressBarStyle = progressBarStyle;
+    }
+
+    public void setSubproducts(List<Product> subproducts) {
+        this.subproducts = subproducts;
+    }
+
+    public String getFirstCoverageColor() {
+        return firstCoverageColor;
+    }
+
+    public void setFirstCoverageColor(String firstCoverageColor) {
+        this.firstCoverageColor = firstCoverageColor;
+    }
+
+    public String getSecondCoverageColor() {
+        return secondCoverageColor;
+    }
+
+    public void setSecondCoverageColor(String secondCoverageColor) {
+        this.secondCoverageColor = secondCoverageColor;
+    }
 }

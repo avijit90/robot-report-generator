@@ -4,11 +4,11 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Statistics {
 
-    @XmlElement(required = true)
+    @XmlElement(name = "total")
     protected Stats total;
-    @XmlElement(required = true)
+    @XmlElement(name = "tag")
     protected Stats tag;
-    @XmlElement(required = true)
+    @XmlElement(name = "suite")
     protected Stats suite;
 
     public Stats getTotal() {
@@ -22,4 +22,5 @@ public class Statistics {
     public Stats getSuite() {
         return suite;
     }
+
 }

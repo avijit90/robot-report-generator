@@ -9,7 +9,9 @@ public class Robot {
 
     @XmlElement(required = true)
     protected Suite suite;
+    @XmlElement(name = "statistics")
     protected Statistics statistics;
+    @XmlElement(name = "errors")
     protected Errors errors;
     @XmlAttribute(name = "generator")
     protected String generator;
