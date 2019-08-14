@@ -1,6 +1,5 @@
 package com.report.generator.service;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.report.generator.constants.CoverageColor;
 import com.report.generator.constants.ProgressBarStyle;
@@ -25,7 +24,7 @@ public class ProductTestLoader implements ProductBuilder {
         overviewRecord.setName("Overview");
         overviewRecord.setPass(20D);
         overviewRecord.setFail(7D);
-        overviewRecord.setTotal();
+        overviewRecord.buildTotal();
         overviewRecord.setFailPercent(calculatePercentage(overviewRecord, FAIL_PERCENT));
         overviewRecord.setPassPercent(calculatePercentage(overviewRecord, PASS_PERCENT));
         StatusColor status = StatusColor.getStatusFromPercentage(overviewRecord.getPassPercent());
@@ -48,33 +47,33 @@ public class ProductTestLoader implements ProductBuilder {
         termDeposit.setStatus("red");
         termDeposit.setPass(4D);
         termDeposit.setFail(5D);
-        termDeposit.setTotal();
+        termDeposit.buildTotal();
         termDeposit.setFailPercent(calculatePercentage(termDeposit, FAIL_PERCENT));
         termDeposit.setPassPercent(calculatePercentage(termDeposit, PASS_PERCENT));
         termDeposit.setDetailView(sanitize(termDeposit.getName()) + ".html");
-        termDeposit.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        termDeposit.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
 
         Product fd = new Product();
         fd.setName("Fixed Deposit");
         fd.setStatus("red");
         fd.setPass(4D);
         fd.setFail(1D);
-        fd.setTotal();
+        fd.buildTotal();
         fd.setFailPercent(calculatePercentage(fd, FAIL_PERCENT));
         fd.setPassPercent(calculatePercentage(fd, PASS_PERCENT));
         fd.setDetailView(sanitize(fd.getName()) + ".html");
-        fd.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        fd.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
 
         Product td = new Product();
         td.setName("TD Sub Product");
         td.setStatus("red");
         td.setPass(0D);
         td.setFail(4D);
-        td.setTotal();
+        td.buildTotal();
         td.setFailPercent(calculatePercentage(td, FAIL_PERCENT));
         td.setPassPercent(calculatePercentage(td, PASS_PERCENT));
         td.setDetailView(sanitize(td.getName()) + ".html");
-        td.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        td.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
 
         List<Product> subproducts = new ArrayList<>();
         populateCoverageColors(newArrayList(fd, td));
@@ -92,11 +91,11 @@ public class ProductTestLoader implements ProductBuilder {
         sysFeatures.setStatus("green");
         sysFeatures.setPass(10D);
         sysFeatures.setFail(2D);
-        sysFeatures.setTotal();
+        sysFeatures.buildTotal();
         sysFeatures.setFailPercent(calculatePercentage(sysFeatures, FAIL_PERCENT));
         sysFeatures.setPassPercent(calculatePercentage(sysFeatures, PASS_PERCENT));
         sysFeatures.setDetailView(sanitize(sysFeatures.getName()) + ".html");
-        sysFeatures.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        sysFeatures.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
         return sysFeatures;
     }
 
@@ -107,33 +106,33 @@ public class ProductTestLoader implements ProductBuilder {
         ftRecord.setStatus("green");
         ftRecord.setPass(6D);
         ftRecord.setFail(0D);
-        ftRecord.setTotal();
+        ftRecord.buildTotal();
         ftRecord.setFailPercent(calculatePercentage(ftRecord, FAIL_PERCENT));
         ftRecord.setPassPercent(calculatePercentage(ftRecord, PASS_PERCENT));
         ftRecord.setDetailView(sanitize(ftRecord.getName()) + ".html");
-        ftRecord.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        ftRecord.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
 
         Product mt103 = new Product();
         mt103.setName("MT103");
         mt103.setStatus("green");
         mt103.setPass(2D);
         mt103.setFail(0D);
-        mt103.setTotal();
+        mt103.buildTotal();
         mt103.setFailPercent(calculatePercentage(mt103, FAIL_PERCENT));
         mt103.setPassPercent(calculatePercentage(mt103, PASS_PERCENT));
         mt103.setDetailView(sanitize(mt103.getName()) + ".html");
-        mt103.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        mt103.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
 
         Product fast = new Product();
         fast.setName("FAST");
         fast.setStatus("green");
         fast.setPass(4D);
         fast.setFail(0D);
-        fast.setTotal();
+        fast.buildTotal();
         fast.setFailPercent(calculatePercentage(fast, FAIL_PERCENT));
         fast.setPassPercent(calculatePercentage(fast, PASS_PERCENT));
         fast.setDetailView(sanitize(fast.getName()) + ".html");
-        fast.setProgressBarStyle(ProgressBarStyle.getRandomStyle());
+        fast.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
 
         List<Product> subproducts = new ArrayList<>();
         populateCoverageColors(newArrayList(mt103, fast));

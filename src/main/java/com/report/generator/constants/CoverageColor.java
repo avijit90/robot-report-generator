@@ -4,16 +4,21 @@ import static java.lang.Math.random;
 import static java.util.Arrays.stream;
 
 public enum CoverageColor {
-    VIOLET(" #633974 ", " #d7bde2"),
+
+    VIOLET("#633974", "#d7bde2"),
     GRAY("#212f3c", "#85929e"),
-    BLUE(" #21618c", "#85c1e9"),
-    GREEN(" #0e6655", "#73c6b6"),
+    BLUE("#21618c", "#85c1e9"),
+    GREEN("#0e6655", "#73c6b6"),
     YELLOW("#9a7d0a", "#f4d03f"),
-    ORANGE(" #873600", "#e59866"),
+    ORANGE("#873600", "#e59866"),
     SKY(" #2980B9", "#6DD5FA"),
     HARVEY("#1f4037","#99f2c8"),
     BLACK_RED("#333333","#dd1818"),
     BLUE_ORANGE("#40E0D0","#FF8C00"),
+    AQUA("#50C9C3","#96DEDA"),
+    ORANGE_YELLOW("#c21500","#ffc500"),
+    PINK_BLUE("#FC354C","#0ABFBC"),
+    PURPLE_BLUE("#B993D6", "#8CA6DB"),
     RED(" #7b241c", " #d98880");
 
     private String firstColor;

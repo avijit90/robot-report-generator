@@ -5,10 +5,11 @@ import static java.util.Arrays.stream;
 
 public enum ProgressBarStyle {
 
-    WARNING("bg-warning"),
-    INFO("bg-info"),
-    PRIMARY("bg-primary"),
-    DARK("bg-dark");
+    YELLOW("#fed713"),
+    BLUE("#198ae3"),
+    PURPLE("#b66dff"),
+    GREEN("#1bcfb4"),
+    BLUE_DARK("#3e4b5b");
 
     private String styleClassName;
 
@@ -20,8 +21,8 @@ public enum ProgressBarStyle {
         return styleClassName;
     }
 
-    public static String getRandomStyle() {
+    public static ProgressBarStyle getRandomStyle() {
         ProgressBarStyle[] values = ProgressBarStyle.values();
-        return stream(values).skip((int) (values.length * random())).findAny().get().getStyleClassName();
+        return stream(values).skip((int) (values.length * random())).findAny().get();
     }
 }

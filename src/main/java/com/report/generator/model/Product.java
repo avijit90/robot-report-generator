@@ -1,21 +1,29 @@
 package com.report.generator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
 
-    public String detailView;
+    private String id;
     public String name;
     public Double pass;
     public Double fail;
+    public Double total;
     public Double passPercent;
     public Double failPercent;
-    public Double total;
+    public String detailView;
     public String status;
     public String progressBarStyle;
     public String firstCoverageColor;
     public String secondCoverageColor;
     public List<Product> subproducts;
+
+    public Product(String id) {
+        this.id = id;
+    }
+
+    public Product() {}
 
     public void setDetailView(String detailView) {
         this.detailView = detailView;
@@ -43,6 +51,13 @@ public class Product {
 
     public List<Product> getSubproducts() {
         return subproducts;
+    }
+
+    public void addSubProduct(Product subProduct) {
+        if (subproducts == null)
+            subproducts = new ArrayList<>();
+
+        subproducts.add(subProduct);
     }
 
     public Double getPass() {
@@ -81,7 +96,7 @@ public class Product {
         return total;
     }
 
-    public void setTotal() {
+    public void buildTotal() {
         this.total = pass + fail;
     }
 
@@ -119,5 +134,13 @@ public class Product {
 
     public void setSecondCoverageColor(String secondCoverageColor) {
         this.secondCoverageColor = secondCoverageColor;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -1,6 +1,9 @@
 package com.report.generator.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Sets;
+import com.report.generator.constants.CoverageColor;
+import com.report.generator.constants.ProgressBarStyle;
 import com.report.generator.model.Product;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,21 +14,27 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static com.report.generator.constants.ApplicationConstants.*;
 import static com.report.generator.util.AppUtils.sanitize;
+import static java.text.MessageFormat.format;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class ViewBuilder {
 
-    public void addStaticValuesToRoot(Map root) {
+    public Map getRootWithStaticValues() {
+        Map root = newHashMap();
         root.put("path_to_Report", "./../report.html");
         root.put("path_to_Output", "./../output.xml");
         root.put("path_to_Log", "./../log.html");
+        return root;
     }
 
-    public void createOutputFile(ObjectMapper objectMapper, Template template, Product overviewRecord, Map root) throws IOException, TemplateException {
+    public void createOutputFile(ObjectMapper objectMapper, Template template, Product overviewRecord, Map root) throws Exception {
 
         if (root.containsKey("product"))
             root.remove("product");
@@ -82,6 +91,28 @@ public class ViewBuilder {
             oldOutputFile.renameTo(new File(newFileName));
             System.out.println("Old output File renamed to : " + newFileName);
         }
+    }
+
+    public void populateColors(List<Product> products) {
+
+        Set<CoverageColor> coverageColors = Sets.newHashSet();
+
+        if (products.size() > CoverageColor.values().length) {
+            System.out.println("ERROR : Cannot find coverage colors !!!");
+            System.out.println(format("products.size={0} and CoverageColor.values.length={1}", products.size(), CoverageColor.values().length));
+            System.exit(500);
+        }
+
+        while (coverageColors.size() != products.size())
+            coverageColors.add(CoverageColor.getRandomColor());
+
+        products.stream().forEach(p -> {
+            CoverageColor selectedColor = coverageColors.iterator().next();
+            p.setFirstCoverageColor(selectedColor.getFirstColor());
+            p.setSecondCoverageColor(selectedColor.getSecondColor());
+            p.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
+            coverageColors.remove(selectedColor);
+        });
     }
 
 }
