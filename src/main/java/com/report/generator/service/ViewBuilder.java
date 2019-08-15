@@ -3,7 +3,6 @@ package com.report.generator.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import com.report.generator.constants.CoverageColor;
-import com.report.generator.constants.ProgressBarStyle;
 import com.report.generator.model.Product;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -110,7 +109,6 @@ public class ViewBuilder {
             CoverageColor selectedColor = coverageColors.iterator().next();
             p.setFirstCoverageColor(selectedColor.getFirstColor());
             p.setSecondCoverageColor(selectedColor.getSecondColor());
-            p.setProgressBarStyle(ProgressBarStyle.getRandomStyle().getStyleClassName());
             coverageColors.remove(selectedColor);
         });
     }

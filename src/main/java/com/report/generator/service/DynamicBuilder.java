@@ -2,12 +2,15 @@ package com.report.generator.service;
 
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.text.MessageFormat;
 
 import static com.report.generator.constants.ApplicationConstants.OUTPUT_XML;
+import static java.text.MessageFormat.format;
 import static org.apache.commons.io.FileUtils.getFile;
 
 public class DynamicBuilder implements ProductBuilder {
@@ -36,9 +39,16 @@ public class DynamicBuilder implements ProductBuilder {
         return getFile(filePath);
     }
 
-    public Robot loadObjectIntoMemory() {
+    public Robot loadObjectIntoMemory(String filePath) {
 
-        File file = readFileFromPath(OUTPUT_XML);
+        if(StringUtils.isEmpty(filePath)){
+            System.out.println(format("output xml not specified, picking up default value={0}", OUTPUT_XML));
+            filePath = OUTPUT_XML;
+        } else {
+            System.out.println(format("Processing user specified output xml={0}", filePath));
+        }
+
+        File file = readFileFromPath(filePath);
 
         try {
 
