@@ -13480,6 +13480,14 @@
                 <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.svg" alt="logo"/></a>
                 <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
             </div>-->
+            <div class="navbar-menu-wrapper d-flex align-items-stretch">
+                <input style="border: none;" type="text" id="mySearch" onkeyup="search()" placeholder="Search.." title="Type in a category">
+                <li class="nav-item d-none d-lg-block full-screen-link">
+                    <a class="nav-link">
+                        <i style="float: right" class="large material-icons cursor-pointer-icon color-black" id="fullscreen-button">fullscreen</i>
+                    </a>
+                </li>
+            </div>
             <!--<div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item d-none d-lg-block full-screen-link">
@@ -13488,14 +13496,11 @@
                             </a>
                     </li>
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                &lt;!&ndash;<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                         data-toggle="offcanvas">
                     <span class="mdi mdi-menu"></span>
-                </button>
+                </button>&ndash;&gt;
             </div>-->
-            <div class="navbar-menu-wrapper d-flex align-items-stretch">
-                <input style="border: none;" type="text" id="mySearch" onkeyup="search()" placeholder="Search.." title="Type in a category">
-            </div>
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
@@ -13531,10 +13536,26 @@
                     <li class="nav-item sidebar-actions">
                         <span class="nav-link">
                             <div class="border-bottom">
-                            <h6 class="font-weight-normal mb-3">Tools</h6>
-                        </div>
-                            <button class="btn btn-block btn-lg btn-gradient-primary mt-4">Export To PDF</button>
-                            <button id="fullscreen-button" class="btn btn-block btn-lg btn-gradient-primary mt-4">Toggle Fullscreen</button>
+                                <h4 class="mb-3">MetaData</h4>
+                            </div>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link" href="${path_to_Report}">
+                                    <span class="menu-title">Report</span>
+                                    <i style="margin-left: 20px" class="material-icons">receipt</i>
+                                </a>
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link" href="${path_to_Output}">
+                                    <span class="menu-title">Output</span>
+                                    <i style="margin-left: 20px" class="material-icons">reorder</i>
+                                </a>
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link" href="${path_to_Log}">
+                                    <span class="menu-title">Log</span>
+                                    <i style="margin-left: 20px" class="material-icons">report</i>
+                                </a>
+                            </li>
                         </span>
                     </li>
                 </ul>
