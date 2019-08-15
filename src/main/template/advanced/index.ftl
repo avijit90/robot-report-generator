@@ -13710,8 +13710,8 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- plugins:js -->
-    <script src="vendor.bundle.base.js"></script>
-    <script src="vendor.bundle.addons.js"></script>
+    <script src="base.js"></script>
+    <script src="addons.js"></script>
     <!-- custom js for this page -->
     <script type="text/javascript">
         $(function() {
@@ -13916,39 +13916,6 @@
     });
     </script>
     <script type="text/javascript">
-        function search() {
-          var input, filter, ul, li, a, i;
-          input = document.getElementById("mySearch");
-          filter = input.value.toUpperCase();
-          ul = document.getElementById("myMenu");
-          li = ul.getElementsByTagName("li");
-
-          if(filter.length == 0) {
-            clearSearchResults();
-          } else {
-            for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
-                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-          }
-
-        }
-
-        function clearSearchResults() {
-            ul = document.getElementById("myMenu");
-            li = ul.getElementsByTagName("li");
-            for (i = 0; i < li.length; i++) {
-                li[i].style.display = "none";
-            }
-        }
-
-        window.onload = clearSearchResults();
-    </script>
-    <script>
         $(document).ready(function(){
           $("#myInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
