@@ -14,7 +14,6 @@ public class Product {
     public Double failPercent;
     public String detailView;
     public String status;
-    public String progressBarStyle;
     public String firstCoverageColor;
     public String secondCoverageColor;
     public List<Product> subproducts;
@@ -106,14 +105,6 @@ public class Product {
 
     public void setTotal(Double total) {
         this.total = total;
-    }
-
-    public String getProgressBarStyle() {
-        return progressBarStyle;
-    }
-
-    public void setProgressBarStyle(String progressBarStyle) {
-        this.progressBarStyle = progressBarStyle;
     }
 
     public void setSubproducts(List<Product> subproducts) {

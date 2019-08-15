@@ -4997,7 +4997,7 @@
           height: 1rem;
           overflow: hidden;
           font-size: 0.75rem;
-          background-color: #e0f2ed;
+          background-color: #f96868;
           border-radius: 0.25rem;
         }
 
@@ -13644,8 +13644,8 @@
                                             </td>
                                             <td>
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                         style="width: ${subproduct.passPercent}%; background-color: ${subproduct.progressBarStyle} !important;" aria-valuenow="${subproduct.passPercent}" aria-valuemin="0"
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         style="width: ${subproduct.passPercent}%;" aria-valuenow="${subproduct.passPercent}" aria-valuemin="0"
                                                          aria-valuemax="100"></div>
                                                 </div>
                                             </td>

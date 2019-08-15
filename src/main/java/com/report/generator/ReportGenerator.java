@@ -3,7 +3,6 @@ package com.report.generator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.report.generator.constants.ProgressBarStyle;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
@@ -14,6 +13,8 @@ import com.report.generator.service.ProductBuilder;
 import com.report.generator.service.ViewBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,17 +31,24 @@ import static com.report.generator.util.AppUtils.calculatePercentage;
 import static com.report.generator.util.AppUtils.sanitize;
 import static java.util.Comparator.comparingInt;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 
 public class ReportGenerator {
 
     ObjectMapper objectMapper = null;
+    String outputFileToProcess = null;
 
     public static void main(String[] args) throws Exception {
         ReportGenerator reportGenerator = new ReportGenerator();
-        reportGenerator.run();
+        reportGenerator.run(args);
     }
 
-    private void run() throws Exception {
+    private void run(String[] args) throws Exception {
+
+        if (isNotEmpty(args)) {
+            outputFileToProcess = args[0];
+        }
+
         String regex = "s\\d+";
         objectMapper = new ObjectMapper();
         final ViewBuilder viewBuilder = new ViewBuilder();
@@ -50,7 +58,7 @@ public class ReportGenerator {
         Template outputTemplate = config.getTemplate("/advanced/index.ftl");
         Map root = viewBuilder.getRootWithStaticValues();
 
-        Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory();
+        Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory(outputFileToProcess);
         //System.out.println(objectMapper.writeValueAsString(robotRoot));
 
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
