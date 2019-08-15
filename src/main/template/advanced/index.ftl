@@ -10,14 +10,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
 
-        /* Style the search box */
-        #mySearch {
-          width: 100%;
-          font-size: 18px;
-          padding: 11px;
-          border: 1px solid #ddd;
-        }
-
         /* Style the navigation menu inside the left column */
         #myMenu {
           list-style-type: none;
@@ -3953,7 +3945,6 @@
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          justify-content: space-between;
           padding: 0.5rem 1rem;
         }
 
@@ -12971,9 +12962,10 @@
         }
 
         .dropdown .dropdown-menu {
-          margin-top: .75rem;
-          font-size: 0.875rem;
+          margin-top: 0rem;
+          font-size: 1rem;
           box-shadow: 0px 1px 15px 1px rgba(230, 234, 236, 0.35);
+          background: linear-gradient(to right, #da8cff, #9a55ff);
         }
 
         .dropdown .dropdown-menu .dropdown-item {
@@ -13468,6 +13460,53 @@
           color: initial;
         }
 
+        .border-navbar {
+            border-top: 6px solid #b22abd;
+            border-bottom: 3px solid #b22abd;
+            border-style: solid none outset none;
+        }
+
+        .page-header-report {
+            float: left;
+            width: 63%;
+            margin-left: 1%;
+            font-weight: 900;
+            font-family: sans-serif;
+            color: #b22abd;
+        }
+
+        .search-list-text {
+            color: #ffffff;
+        }
+
+        .nav-buttons-with-icons {
+            margin-bottom: 10px;
+            border: 1px solid;
+            width: 225px;
+            border-radius: 13px;
+        }
+
+        .search-nav-li-border {
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .search-nav-li-border:hover {
+            border-bottom: 1px solid #b22abd !important;;
+        }
+
+        .search-nav-cursor-pointer {
+            cursor: pointer;
+        }
+
+        .search-nav-cursor-pointer:hover {
+            background: #ffffff !important;
+        }
+
+        .search-nav-cursor-pointer:hover .search-list-text {
+            color: #b22abd !important;
+            text-decoration: none;
+        }
+
         /*# sourceMappingURL=maps/style.css.map */
 
     </style>
@@ -13475,48 +13514,38 @@
 <body>
     <div class="container-scroller">
         <!-- partial:partials/_navbar.html -->
-        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <!--<div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.svg" alt="logo"/></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
-            </div>-->
-            <div class="navbar-menu-wrapper d-flex align-items-stretch">
-                <input style="border: none;" type="text" id="mySearch" onkeyup="search()" placeholder="Search.." title="Type in a category">
-                <li class="nav-item d-none d-lg-block full-screen-link">
-                    <a class="nav-link">
-                        <i style="float: right" class="large material-icons cursor-pointer-icon color-black" id="fullscreen-button">fullscreen</i>
-                    </a>
-                </li>
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row border-navbar">
+            <h4 class="page-header-report">TEST REPORT</h4>
+            <div class="search-field d-none d-md-block">
+                <div class="dropdown" style="margin-left: 10px;">
+                    <button class="btn btn-block btn-lg btn-gradient-primary mt-2 nav-buttons-with-icons" type="button" data-toggle="dropdown">
+                        <i style="float: left;" class="large material-icons cursor-pointer-icon color-black">search</i>
+                        Click to Search</button>
+                    <ul class="dropdown-menu">
+                        <input style="background: #282626; color: #ffffff;" class="form-control" id="myInput" type="text" placeholder="Enter search text here ...">
+                        <#if searchList??>
+                            <#list searchList as searchObject>
+                                <li class="text-center search-nav-cursor-pointer search-nav-li-border">
+                                    <a class="search-list-text" href="${searchObject.url}">${searchObject.text}</a>
+                                </li>
+                            </#list>
+                        </#if>
+                    </ul>
+                </div>
             </div>
-            <!--<div class="navbar-menu-wrapper d-flex align-items-stretch">
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item d-none d-lg-block full-screen-link">
-                            <a class="nav-link">
-                                <i style="float: right" class="large material-icons cursor-pointer-icon color-black" id="fullscreen-button">fullscreen</i>
-                            </a>
-                    </li>
-                </ul>
-                &lt;!&ndash;<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-                        data-toggle="offcanvas">
-                    <span class="mdi mdi-menu"></span>
-                </button>&ndash;&gt;
-            </div>-->
+            <div class="search-field d-none d-md-block">
+                <div class="dropdown" style="margin-left: 10px;">
+                    <button id="fullscreen-button" class="nav-buttons-with-icons btn btn-block btn-lg btn-gradient-primary mt-2" type="button">
+                        <i style="float: left" class="large material-icons cursor-pointer-icon color-black" >fullscreen</i>
+                        Toggle Screen</button>
+                </div>
+            </div>
         </nav>
+
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <div id="myMenu">
-                    <li><a href="#">HTML</a></li>
-                    <li><a href="#">CSS</a></li>
-                    <li><a href="#">JavaScript</a></li>
-                    <li><a href="#">PHP</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">jQuery</a></li>
-                    <li><a href="#">SQL</a></li>
-                    <li><a href="#">Bootstrap</a></li>
-                    <li><a href="#">Node.js</a></li>
-                </div>
                 <ul class="nav">
                     <li class="nav-item cursor-pointer">
                         <a class="nav-link" href="${homePage}">
@@ -13536,7 +13565,7 @@
                     <li class="nav-item sidebar-actions">
                         <span class="nav-link">
                             <div class="border-bottom">
-                                <h4 class="mb-3">MetaData</h4>
+                                <h4 class="mb-3">Robot Execution Data</h4>
                             </div>
                             <li class="nav-item cursor-pointer">
                                 <a class="nav-link" href="${path_to_Report}">
@@ -13918,6 +13947,16 @@
         }
 
         window.onload = clearSearchResults();
+    </script>
+    <script>
+        $(document).ready(function(){
+          $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".dropdown-menu li").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
     </script>
 </body>
 

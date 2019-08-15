@@ -1,11 +1,13 @@
 package com.report.generator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
+import com.report.generator.model.SearchResult;
 import com.report.generator.model.Stat;
 import com.report.generator.service.ConfigurationService;
 import com.report.generator.service.DynamicBuilder;
@@ -66,6 +68,11 @@ public class ReportGenerator {
         Stat largestStat = statObj.stream().min(comparingInt(s -> s.getId().length())).get();
         String fileName = sanitize(largestStat.getName());
         root.put("homePage", fileName + ".html");
+        root.put("searchList", Lists.newArrayList(new SearchResult("Home", "Home"),
+                new SearchResult("Fund Transfer", "Fund Transfer"),
+                new SearchResult("a Very Large Texr is added here, lets see how it displays", "Fund Transfer"),
+                new SearchResult("System Features", "System Features"),
+                new SearchResult("Term Deposit", "Term Deposit")));
 
         Stat smallestChildStat = statObj.stream().max(comparingInt(s -> s.getId().length())).get();
         long count = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
