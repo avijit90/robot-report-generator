@@ -1,9 +1,6 @@
 package com.report.generator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
@@ -15,8 +12,6 @@ import com.report.generator.service.ProductBuilder;
 import com.report.generator.service.ViewBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +21,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 import static com.report.generator.constants.PercentageType.FAIL_PERCENT;
 import static com.report.generator.constants.PercentageType.PASS_PERCENT;
 import static com.report.generator.constants.StatusColor.getStatusFromPercentage;
@@ -39,6 +36,8 @@ public class ReportGenerator {
 
     ObjectMapper objectMapper = null;
     String outputFileToProcess = null;
+    List<SearchResult> searchResults = null;
+    Map<String, String> pagesCreated = null;
 
     public static void main(String[] args) throws Exception {
         ReportGenerator reportGenerator = new ReportGenerator();
@@ -59,6 +58,7 @@ public class ReportGenerator {
         Configuration config = configurationService.getConfiguration();
         Template outputTemplate = config.getTemplate("/advanced/index.ftl");
         Map root = viewBuilder.getRootWithStaticValues();
+        pagesCreated = newHashMap();
 
         Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory(outputFileToProcess);
         //System.out.println(objectMapper.writeValueAsString(robotRoot));
@@ -68,37 +68,30 @@ public class ReportGenerator {
         Stat largestStat = statObj.stream().min(comparingInt(s -> s.getId().length())).get();
         String fileName = sanitize(largestStat.getName());
         root.put("homePage", fileName + ".html");
-        root.put("searchList", Lists.newArrayList(new SearchResult("Home", "Home"),
-                new SearchResult("Fund Transfer", "Fund Transfer"),
-                new SearchResult("a Very Large Texr is added here, lets see how it displays", "Fund Transfer"),
-                new SearchResult("System Features", "System Features"),
-                new SearchResult("Term Deposit", "Term Deposit")));
 
         Stat smallestChildStat = statObj.stream().max(comparingInt(s -> s.getId().length())).get();
-        long count = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
+        long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
         System.out.println("smallestChildStat ID : " + smallestChildStat.getId());
-        System.out.println("count : " + count);
+        System.out.println("regexOccurrenceCount : " + regexOccurrenceCount);
 
-        HashMap<String, List<Product>> allProducts = Maps.newHashMap();
+        HashMap<String, List<Product>> allProducts = newHashMap();
+        while (regexOccurrenceCount != 0) {
 
-        while (count != 0) {
-
-            String stringToMatch = getRegexToMatch(regex, (int) count, false);
+            String stringToMatch = getRegexToMatch(regex, (int) regexOccurrenceCount, false);
 
             allProducts.put(stringToMatch, buildChildProducts(statObj, stringToMatch));
-            count--;
+            regexOccurrenceCount--;
         }
 
-        //System.out.println(objectMapper.writeValueAsString(allProducts));
+        System.out.println(objectMapper.writeValueAsString(allProducts));
         int sum = allProducts.values().stream().map(List::size).mapToInt(Integer::intValue).sum();
         System.out.println("map size : " + sum);
         System.out.println("statObj size : " + statObj.size());
 
-        count = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
+        regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
+        while (regexOccurrenceCount != 1) {
 
-        while (count != 1) {
-
-            String stringToMatch = getRegexToMatch(regex, (int) count, true);
+            String stringToMatch = getRegexToMatch(regex, (int) regexOccurrenceCount, true);
 
             allProducts.get(stringToMatch).stream()
                     .forEach(p -> {
@@ -109,6 +102,7 @@ public class ReportGenerator {
 
                         subProducts.stream().forEach(c -> {
                             try {
+                                searchResults.add(new SearchResult(c.getName(), pagesCreated.get(p.getId())));
                                 if (isNotEmpty(c.getSubproducts())) {
                                     viewBuilder.populateColors(c.getSubproducts());
                                     viewBuilder.createOutputFile(objectMapper, outputTemplate, c, root);
@@ -122,11 +116,11 @@ public class ReportGenerator {
                     });
 
             allProducts.remove(stringToMatch + "-" + regex);
-            count--;
+            regexOccurrenceCount--;
         }
 
         System.out.println(objectMapper.writeValueAsString(allProducts));
-
+        root.put("searchList", searchResults);
         allProducts.get(regex).stream().forEach(
                 c -> {
                     try {
@@ -143,24 +137,6 @@ public class ReportGenerator {
         Product termDeposit = productBuilder.getTermDepositRecord();
         Product sysFeatures = productBuilder.getSysFeaturesRecord();
         Product overviewRecord = productBuilder.buildOverview(ftRecord, sysFeatures, termDeposit);*/
-
-        /*if (consolidatedProductList.size() == 1) {
-            Product overviewRecord = consolidatedProductList.get(0);
-            viewBuilder.createOutputFile(objectMapper, outputTemplate, overviewRecord, root);
-
-            if(isNotEmpty(overviewRecord.getSubproducts())){
-                overviewRecord.getSubproducts().stream().forEach(p -> {
-                    try {
-                        viewBuilder.createOutputFile(objectMapper, outputTemplate, p, root);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-        } else {
-            System.out.println("consolidatedProductList : " + consolidatedProductList);
-            System.out.println("Error : More than One root element found !");
-        }*/
 
         //viewBuilder.createOutputFile(objectMapper, sidebarTemplate, overviewRecord, root);
         //viewBuilder.createOutputFile(objectMapper, outputTemplate, overviewRecord, root);
@@ -187,7 +163,8 @@ public class ReportGenerator {
 
     private List<Product> buildChildProducts(List<Stat> statObj, String stringToMatch) {
 
-        List<Product> productsList = Lists.newArrayList();
+        List<Product> productsList = newArrayList();
+        searchResults = newArrayList();
 
         List<Stat> matchingChildren = statObj.stream()
                 .filter(s -> s.getId().matches(stringToMatch))
@@ -205,7 +182,10 @@ public class ReportGenerator {
                         productObj.setPassPercent(calculatePercentage(productObj, PASS_PERCENT));
                         StatusColor status = getStatusFromPercentage(productObj.getPassPercent());
                         productObj.setStatus(status.getColor());
-                        productObj.setDetailView(sanitize(productObj.getName()) + ".html");
+                        String url = sanitize(productObj.getName()) + ".html";
+                        productObj.setDetailView(url);
+                        pagesCreated.put(s.getId(), url);
+                        searchResults.add(new SearchResult(s.getName(), url));
                         return productObj;
                     }).collect(Collectors.toList());
 

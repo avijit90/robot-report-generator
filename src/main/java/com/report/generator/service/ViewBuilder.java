@@ -6,6 +6,7 @@ import com.report.generator.constants.CoverageColor;
 import com.report.generator.model.Product;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -58,11 +59,21 @@ public class ViewBuilder {
         Writer fileWriter = new FileWriter(outputFile);
         System.out.println("Output File : " + outputFile.getPath());
 
+        createDependentJSFiles();
+
         try {
             template.process(root, fileWriter);
         } finally {
             fileWriter.close();
         }
+    }
+
+    private void createDependentJSFiles() throws IOException {
+        File addonsFile = FileUtils.getFile(RESOURCES_DIRECTORY + "addons.js");
+        File baseFile = FileUtils.getFile(RESOURCES_DIRECTORY + "base.js");
+        File destinationDirectory = FileUtils.getFile(OUTPUT_DIRECTORY);
+        FileUtils.copyFileToDirectory(addonsFile, destinationDirectory);
+        FileUtils.copyFileToDirectory(baseFile, destinationDirectory);
     }
 
     private String getTemplateOutput(Template template, Map root) throws TemplateException, IOException {
