@@ -12,7 +12,10 @@ import com.report.generator.service.ProductBuilder;
 import com.report.generator.service.ViewBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +38,10 @@ import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 public class ReportGenerator {
 
     ObjectMapper objectMapper = null;
-    String outputFileToProcess = null;
+    String outputXml = null;
     List<SearchResult> searchResults = null;
     Map<String, String> pagesCreated = null;
+    ViewBuilder viewBuilder = null;
 
     public static void main(String[] args) throws Exception {
         ReportGenerator reportGenerator = new ReportGenerator();
@@ -46,13 +50,34 @@ public class ReportGenerator {
 
     private void run(String[] args) throws Exception {
 
+        String inputDir = null;
+        String outputDir = null;
+
         if (isNotEmpty(args)) {
-            outputFileToProcess = args[0];
+
+            inputDir = args[0];
+            File xmlFile = FileUtils.getFile(inputDir + "/output.xml");
+            if (!xmlFile.exists() || !xmlFile.canRead()) {
+                System.out.println("Either the input file is not present or read-file permission is not given for file :");
+                System.out.println(inputDir);
+            } else {
+                outputXml = xmlFile.getPath();
+            }
+
+            if (ArrayUtils.getLength(args) > 1) {
+                outputDir = args[1];
+                File output = FileUtils.getFile(outputDir);
+                if (!output.isDirectory() && !output.canWrite()) {
+                    System.out.println("Either the output directory is not present or write permission is not given for the directory :");
+                    System.out.println(outputDir);
+                }
+            }
+
         }
 
+        viewBuilder = new ViewBuilder(inputDir, outputDir);
         String regex = "s\\d+";
         objectMapper = new ObjectMapper();
-        final ViewBuilder viewBuilder = new ViewBuilder();
         final ConfigurationService configurationService = new ConfigurationService();
         final ProductBuilder productBuilder = new DynamicBuilder();
         Configuration config = configurationService.getConfiguration();
@@ -60,7 +85,7 @@ public class ReportGenerator {
         Map root = viewBuilder.getRootWithStaticValues();
         pagesCreated = newHashMap();
 
-        Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory(outputFileToProcess);
+        Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory(outputXml);
         //System.out.println(objectMapper.writeValueAsString(robotRoot));
 
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
@@ -132,7 +157,6 @@ public class ReportGenerator {
                         e.printStackTrace();
                     }
                 });
-
         /*Product ftRecord = productBuilder.getFundTransferRecord();
         Product termDeposit = productBuilder.getTermDepositRecord();
         Product sysFeatures = productBuilder.getSysFeaturesRecord();

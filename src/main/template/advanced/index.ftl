@@ -13568,19 +13568,19 @@
                                 <h4 class="mb-3">Robot Execution Data</h4>
                             </div>
                             <li class="nav-item cursor-pointer">
-                                <a class="nav-link" href="${path_to_Report}">
+                                <a class="nav-link" href="robotFiles/report.html">
                                     <span class="menu-title">Report</span>
                                     <i style="margin-left: 20px" class="material-icons">receipt</i>
                                 </a>
                             </li>
                             <li class="nav-item cursor-pointer">
-                                <a class="nav-link" href="${path_to_Output}">
+                                <a class="nav-link" href="robotFiles/output.xml">
                                     <span class="menu-title">Output</span>
                                     <i style="margin-left: 20px" class="material-icons">reorder</i>
                                 </a>
                             </li>
                             <li class="nav-item cursor-pointer">
-                                <a class="nav-link" href="${path_to_Log}">
+                                <a class="nav-link" href="robotFiles/log.html">
                                     <span class="menu-title">Log</span>
                                     <i style="margin-left: 20px" class="material-icons">report</i>
                                 </a>
@@ -13710,8 +13710,8 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- plugins:js -->
-    <script src="base.js"></script>
-    <script src="addons.js"></script>
+    <script src="dependencies/base.js"></script>
+    <script src="dependencies/addons.js"></script>
     <!-- custom js for this page -->
     <script type="text/javascript">
         $(function() {
