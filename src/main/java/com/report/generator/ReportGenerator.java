@@ -1,6 +1,7 @@
 package com.report.generator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
@@ -81,12 +82,10 @@ public class ReportGenerator {
         final ConfigurationService configurationService = new ConfigurationService();
         final ProductBuilder productBuilder = new DynamicBuilder();
         Configuration config = configurationService.getConfiguration();
-        Template outputTemplate = config.getTemplate("/advanced/index.ftl");
-        Map root = viewBuilder.getRootWithStaticValues();
+        Map root = newHashMap();
         pagesCreated = newHashMap();
 
         Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory(outputXml);
-        //System.out.println(objectMapper.writeValueAsString(robotRoot));
 
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
 
@@ -130,7 +129,7 @@ public class ReportGenerator {
                                 searchResults.add(new SearchResult(c.getName(), pagesCreated.get(p.getId())));
                                 if (isNotEmpty(c.getSubproducts())) {
                                     viewBuilder.populateColors(c.getSubproducts());
-                                    viewBuilder.createOutputFile(objectMapper, outputTemplate, c, root);
+                                    viewBuilder.createOutputFile(objectMapper, config.getTemplate("index.ftl"), c, root);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -144,14 +143,14 @@ public class ReportGenerator {
             regexOccurrenceCount--;
         }
 
-        System.out.println(objectMapper.writeValueAsString(allProducts));
+        //System.out.println(objectMapper.writeValueAsString(allProducts));
         root.put("searchList", searchResults);
         allProducts.get(regex).stream().forEach(
                 c -> {
                     try {
                         if (isNotEmpty(c.getSubproducts())) {
                             viewBuilder.populateColors(c.getSubproducts());
-                            viewBuilder.createOutputFile(objectMapper, outputTemplate, c, root);
+                            viewBuilder.createOutputFile(objectMapper, config.getTemplate("index.ftl"), c, root);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -172,11 +171,11 @@ public class ReportGenerator {
     }
 
     private String getRegexToMatch(String regex, int count, boolean decreaseCount) {
-        System.out.println("repetition : " + count);
+        //System.out.println("repetition : " + count);
         List<String> regexList = new ArrayList<>();
         IntStream.range(0, decreaseCount ? count - 1 : count).forEach(i -> regexList.add(i, regex));
         String stringToMatch = String.join("-", regexList);
-        System.out.println("stringToMatch :" + stringToMatch);
+        //System.out.println("stringToMatch :" + stringToMatch);
         return stringToMatch;
     }
 
