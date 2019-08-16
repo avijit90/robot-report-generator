@@ -6,7 +6,6 @@ import com.report.generator.constants.CoverageColor;
 import com.report.generator.model.Product;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,8 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,6 @@ import static java.text.MessageFormat.format;
 import static org.apache.commons.io.FileUtils.copyFileToDirectory;
 import static org.apache.commons.io.FileUtils.getFile;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ViewBuilder {
 
@@ -44,28 +40,11 @@ public class ViewBuilder {
         this.reportFilePath = inputDirectory + "/" + REPORT_HTML;
         this.outputFilePath = inputDirectory + "/" + OUTPUT_XML;
         this.logFilePath = inputDirectory + "/" + LOG_HTML;
-        this.outputDirectory = isEmpty(outputDirectory) ? createOutputDirectory() : outputDirectory + "/";
-    }
-
-    private String createOutputDirectory() {
-        String executionDirectory = new File(".").getAbsoluteFile().getParent();
-        String output = "output";
-        String outputDir = executionDirectory + "/" + output;
-        File directory = new File(outputDir);
-        if (!directory.exists()) {
-            directory.mkdir();
-        } else {
-            directory.renameTo(new File(output+"_"+getLastModifiedDate(directory)));
-            new File(outputDir).mkdir();
-        }
-
-        return outputDir + "/";
+        this.outputDirectory = outputDirectory;
     }
 
     public void createOutputFile(ObjectMapper objectMapper, Template template, Product overviewRecord, Map root) throws Exception {
 
-        if (root.containsKey("product"))
-            root.remove("product");
         root.put("product", overviewRecord);
 
         if (containsIgnoreCase(template.getName(), "sidebar")) {
@@ -103,11 +82,11 @@ public class ViewBuilder {
         Path jsPath = Paths.get(jsDirectory);
         Files.createDirectories(jsPath);
 
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ADDONS_JS_FILE_PATH);
-        Files.copy(resourceAsStream, Paths.get(jsDirectory + "/" + ADDONS_JS_FILE_PATH), REPLACE_EXISTING);
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ADDONS_JS);
+        Files.copy(resourceAsStream, Paths.get(jsDirectory + "/" + ADDONS_JS), REPLACE_EXISTING);
 
-        InputStream abc = this.getClass().getClassLoader().getResourceAsStream(BASE_JS_FILE_PATH);
-        Files.copy(abc, Paths.get(jsDirectory + "/" + BASE_JS_FILE_PATH), REPLACE_EXISTING);
+        InputStream abc = this.getClass().getClassLoader().getResourceAsStream(BASE_JS);
+        Files.copy(abc, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
 
     }
 
@@ -145,7 +124,7 @@ public class ViewBuilder {
         if (outputFile.exists()) {
             File oldOutputFile = new File(outputDirectory + fileName + ".html");
             String dateTimeStamp = getLastModifiedDate(oldOutputFile);
-            String newFileName = outputDirectory + fileName + UNDERSCORE + dateTimeStamp + HTML;
+            String newFileName = outputDirectory + fileName + UNDERSCORE + dateTimeStamp + HTML_FILE_EXTENSION;
             oldOutputFile.renameTo(new File(newFileName));
             System.out.println("Old output File renamed to : " + newFileName);
         }
@@ -179,11 +158,4 @@ public class ViewBuilder {
         });
     }
 
-    public String getInputDirectory() {
-        return inputDirectory;
-    }
-
-    public String getOutputDirectory() {
-        return outputDirectory;
-    }
 }

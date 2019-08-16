@@ -2,12 +2,11 @@ package com.report.generator.service;
 
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.FileUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
-import java.text.MessageFormat;
 
 import static com.report.generator.constants.ApplicationConstants.OUTPUT_XML;
 import static java.text.MessageFormat.format;
@@ -39,19 +38,21 @@ public class DynamicBuilder implements ProductBuilder {
         return getFile(filePath);
     }
 
-    public Robot loadObjectIntoMemory(String filePath) {
+    public Robot readRobotInput(String filePath) {
 
-        if(StringUtils.isEmpty(filePath)){
-            System.out.println(format("output xml not specified, picking up default value={0}", OUTPUT_XML));
-            filePath = OUTPUT_XML;
+        filePath = filePath + "/" + OUTPUT_XML;
+
+        File xmlFile = FileUtils.getFile(filePath);
+        if (!xmlFile.exists() || !xmlFile.canRead()) {
+            System.out.println("Either the input file is not present or read-file permission is not given for file :");
+            System.out.println(filePath);
         } else {
-            System.out.println(format("Processing user specified output xml={0}", filePath));
+            System.out.println(format("Processing output xml file at location={0}", filePath));
         }
 
         File file = readFileFromPath(filePath);
 
         try {
-
             JAXBContext jaxbContext = JAXBContext.newInstance(Robot.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             return (Robot) unmarshaller.unmarshal(file);

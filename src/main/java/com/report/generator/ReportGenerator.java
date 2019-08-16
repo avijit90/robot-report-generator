@@ -1,22 +1,14 @@
 package com.report.generator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
 import com.report.generator.model.Robot;
 import com.report.generator.model.SearchResult;
 import com.report.generator.model.Stat;
-import com.report.generator.service.ConfigurationService;
-import com.report.generator.service.DynamicBuilder;
-import com.report.generator.service.ProductBuilder;
-import com.report.generator.service.ViewBuilder;
+import com.report.generator.service.*;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,15 +26,15 @@ import static com.report.generator.util.AppUtils.calculatePercentage;
 import static com.report.generator.util.AppUtils.sanitize;
 import static java.util.Comparator.comparingInt;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 
 public class ReportGenerator {
 
     ObjectMapper objectMapper = null;
-    String outputXml = null;
     List<SearchResult> searchResults = null;
     Map<String, String> pagesCreated = null;
     ViewBuilder viewBuilder = null;
+    InputParser inputParser = null;
+    FileService fileService = null;
 
     public static void main(String[] args) throws Exception {
         ReportGenerator reportGenerator = new ReportGenerator();
@@ -51,41 +43,18 @@ public class ReportGenerator {
 
     private void run(String[] args) throws Exception {
 
-        String inputDir = null;
-        String outputDir = null;
-
-        if (isNotEmpty(args)) {
-
-            inputDir = args[0];
-            File xmlFile = FileUtils.getFile(inputDir + "/output.xml");
-            if (!xmlFile.exists() || !xmlFile.canRead()) {
-                System.out.println("Either the input file is not present or read-file permission is not given for file :");
-                System.out.println(inputDir);
-            } else {
-                outputXml = xmlFile.getPath();
-            }
-
-            if (ArrayUtils.getLength(args) > 1) {
-                outputDir = args[1];
-                File output = FileUtils.getFile(outputDir);
-                if (!output.isDirectory() && !output.canWrite()) {
-                    System.out.println("Either the output directory is not present or write permission is not given for the directory :");
-                    System.out.println(outputDir);
-                }
-            }
-
-        }
-
-        viewBuilder = new ViewBuilder(inputDir, outputDir);
-        String regex = "s\\d+";
+        fileService = new FileService();
+        inputParser = new InputParser(args, fileService);
+        viewBuilder = new ViewBuilder(inputParser.getInputDir(), inputParser.getOutputDir());
         objectMapper = new ObjectMapper();
-        final ConfigurationService configurationService = new ConfigurationService();
-        final ProductBuilder productBuilder = new DynamicBuilder();
-        Configuration config = configurationService.getConfiguration();
+        final DynamicBuilder productBuilder = new DynamicBuilder();
+        Configuration config = new ConfigurationService().getConfiguration();
+
+        String regex = "s\\d+";
         Map root = newHashMap();
         pagesCreated = newHashMap();
 
-        Robot robotRoot = ((DynamicBuilder) productBuilder).loadObjectIntoMemory(outputXml);
+        Robot robotRoot = productBuilder.readRobotInput(inputParser.getInputDir());
 
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
 
@@ -107,7 +76,7 @@ public class ReportGenerator {
             regexOccurrenceCount--;
         }
 
-        System.out.println(objectMapper.writeValueAsString(allProducts));
+        //System.out.println(objectMapper.writeValueAsString(allProducts));
         int sum = allProducts.values().stream().map(List::size).mapToInt(Integer::intValue).sum();
         System.out.println("map size : " + sum);
         System.out.println("statObj size : " + statObj.size());
