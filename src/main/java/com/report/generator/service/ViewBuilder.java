@@ -22,13 +22,14 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 import static com.report.generator.constants.ApplicationConstants.*;
 import static com.report.generator.util.AppUtils.sanitize;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.io.FileUtils.copyFileToDirectory;
 import static org.apache.commons.io.FileUtils.getFile;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ViewBuilder {
 
@@ -43,15 +44,22 @@ public class ViewBuilder {
         this.reportFilePath = inputDirectory + "/" + REPORT_HTML;
         this.outputFilePath = inputDirectory + "/" + OUTPUT_XML;
         this.logFilePath = inputDirectory + "/" + LOG_HTML;
-        this.outputDirectory = StringUtils.isEmpty(outputDirectory) ? DEFAULT_OUTPUT_DIRECTORY : outputDirectory + "/";
+        this.outputDirectory = isEmpty(outputDirectory) ? createOutputDirectory() : outputDirectory + "/";
     }
 
-    public Map getRootWithStaticValues() {
-        Map root = newHashMap();
-        /*root.put("path_to_Report", reportFilePath);
-        root.put("path_to_Output", outputFilePath);
-        root.put("path_to_Log", logFilePath);*/
-        return root;
+    private String createOutputDirectory() {
+        String executionDirectory = new File(".").getAbsoluteFile().getParent();
+        String output = "output";
+        String outputDir = executionDirectory + "/" + output;
+        File directory = new File(outputDir);
+        if (!directory.exists()) {
+            directory.mkdir();
+        } else {
+            directory.renameTo(new File(output+"_"+getLastModifiedDate(directory)));
+            new File(outputDir).mkdir();
+        }
+
+        return outputDir + "/";
     }
 
     public void createOutputFile(ObjectMapper objectMapper, Template template, Product overviewRecord, Map root) throws Exception {
@@ -95,15 +103,11 @@ public class ViewBuilder {
         Path jsPath = Paths.get(jsDirectory);
         Files.createDirectories(jsPath);
 
-        newArrayList(ADDONS_JS_FILE_PATH, BASE_JS_FILE_PATH)
-                .stream().forEach(f -> {
-            try {
-                copyFileToDirectory(getFile(f), getFile(jsDirectory + "/"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ADDONS_JS_FILE_PATH);
+        Files.copy(resourceAsStream, Paths.get(jsDirectory + "/" + ADDONS_JS_FILE_PATH), REPLACE_EXISTING);
 
+        InputStream abc = this.getClass().getClassLoader().getResourceAsStream(BASE_JS_FILE_PATH);
+        Files.copy(abc, Paths.get(jsDirectory + "/" + BASE_JS_FILE_PATH), REPLACE_EXISTING);
 
     }
 
@@ -140,15 +144,18 @@ public class ViewBuilder {
     private void checkAndBackupOldFile(String fileName, File outputFile) {
         if (outputFile.exists()) {
             File oldOutputFile = new File(outputDirectory + fileName + ".html");
-            long date = oldOutputFile.lastModified();
-            Instant instant = Instant.ofEpochMilli(date);
-            LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-            Date dateFromOld = Date.from(instant);
-            String dateTimeStamp = new SimpleDateFormat("yyyyMMddHHmm").format(dateFromOld);
+            String dateTimeStamp = getLastModifiedDate(oldOutputFile);
             String newFileName = outputDirectory + fileName + UNDERSCORE + dateTimeStamp + HTML;
             oldOutputFile.renameTo(new File(newFileName));
             System.out.println("Old output File renamed to : " + newFileName);
         }
+    }
+
+    private String getLastModifiedDate(File file) {
+        long date = file.lastModified();
+        Instant instant = Instant.ofEpochMilli(date);
+        Date dateFromOld = Date.from(instant);
+        return new SimpleDateFormat("yyyyMMddHHmm").format(dateFromOld);
     }
 
     public void populateColors(List<Product> products) {
