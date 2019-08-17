@@ -1,4 +1,4 @@
-# robot-report-generator
+# robot-report-generator [![Build Status](https://travis-ci.org/avijit90/robot-report-generator.svg?branch=master)](https://travis-ci.org/avijit90/robot-report-generator)
 A java and freemarker based utility that can be used to generate rich UI reports from robot test results.
 
 # Tech-stack
