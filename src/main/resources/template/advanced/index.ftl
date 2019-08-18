@@ -13523,7 +13523,7 @@
                         Click to Search</button>
                     <ul class="dropdown-menu">
                         <input style="background: #282626; color: #ffffff;" class="form-control" id="myInput" type="text" placeholder="Enter search text here ...">
-                        <#if searchList??>
+                        <#if searchList?has_content>
                             <#list searchList as searchObject>
                                 <li class="text-center search-nav-cursor-pointer search-nav-li-border">
                                     <a class="search-list-text" href="${searchObject.url}">${searchObject.text}</a>
@@ -13554,7 +13554,7 @@
                         </a>
                     </li>
                         <#list product.subproducts as subproduct>
-                            <#if subproduct.subproducts??>
+                            <#if subproduct.subproducts?has_content>
                                 <li class="nav-item cursor-pointer">
                                     <a class="nav-link" href="${subproduct.detailView}">
                                         <span class="menu-title">${subproduct.name}</span>
