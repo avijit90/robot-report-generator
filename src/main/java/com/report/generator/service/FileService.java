@@ -15,7 +15,7 @@ public class FileService {
         return getFile(filePath);
     }
 
-    public String getInputDirectory() {
+    public String getDefaultInputDirectory() {
         String executionDirectory = new File(".").getAbsoluteFile().getParent();
         File directory = new File(executionDirectory);
         if (!directory.exists() || !directory.canRead()) {
@@ -27,7 +27,7 @@ public class FileService {
         return executionDirectory;
     }
 
-    public String getOutputDirectory() {
+    public String getDefaultOutputDirectory() {
         String executionDirectory = new File(".").getAbsoluteFile().getParent();
         String output = "robot_report";
         String outputDir = executionDirectory + "/" + output;
