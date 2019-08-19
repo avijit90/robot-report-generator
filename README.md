@@ -16,7 +16,7 @@ This will create a jar file named **robot-report-generator.jar** in the target d
 
 # Running the Application 
 Run application using command :  
-`java -jar robot-report-generator.jar <path_to_robot_files_dir> <output_dir>`  <br/>
+`java -jar robot-report-generator.jar input=<path_to_robot_files_dir> output=<output_dir>`  <br/>
 **Note**: the `path_to_robot_file_dir` and `output_dir` are optional parameters.  
 If you are not running the command from the same folder as the robot files you can specify the relevant path.
 If these parameters are not specified, the application will look in the current dir for files to process.
