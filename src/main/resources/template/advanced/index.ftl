@@ -13475,6 +13475,15 @@
             color: #b22abd;
         }
 
+        .page-header-report-extended {
+            float: left;
+            width: 78%;
+            margin-left: 1%;
+            font-weight: 900;
+            font-family: sans-serif;
+            color: #b22abd;
+        }
+
         .search-list-text {
             color: #ffffff;
         }
@@ -13515,24 +13524,26 @@
     <div class="container-scroller">
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row border-navbar">
-            <h4 class="page-header-report">TEST REPORT</h4>
-            <div class="search-field d-none d-md-block">
-                <div class="dropdown" style="margin-left: 10px;">
-                    <button class="btn btn-block btn-lg btn-gradient-primary mt-2 nav-buttons-with-icons" type="button" data-toggle="dropdown">
-                        <i style="float: left;" class="large material-icons cursor-pointer-icon color-black">search</i>
-                        Click to Search</button>
-                    <ul class="dropdown-menu">
-                        <input style="background: #282626; color: #ffffff;" class="form-control" id="myInput" type="text" placeholder="Enter search text here ...">
-                        <#if searchList?has_content>
-                            <#list searchList as searchObject>
-                                <li class="text-center search-nav-cursor-pointer search-nav-li-border">
-                                    <a class="search-list-text" href="${searchObject.url}">${searchObject.text}</a>
-                                </li>
-                            </#list>
-                        </#if>
-                    </ul>
+            <#if searchList?has_content>
+                <h4 class="page-header-report">TEST REPORT</h4>
+                <div class="search-field d-none d-md-block">
+                    <div class="dropdown" style="margin-left: 10px;">
+                        <button class="btn btn-block btn-lg btn-gradient-primary mt-2 nav-buttons-with-icons" type="button" data-toggle="dropdown">
+                            <i style="float: left;" class="large material-icons cursor-pointer-icon color-black">search</i>
+                            Click to Search</button>
+                        <ul class="dropdown-menu">
+                            <input style="background: #282626; color: #ffffff;" class="form-control" id="myInput" type="text" placeholder="Enter search text here ...">
+                                <#list searchList as searchObject>
+                                    <li class="text-center search-nav-cursor-pointer search-nav-li-border">
+                                        <a class="search-list-text" href="${searchObject.url}">${searchObject.text}</a>
+                                    </li>
+                                </#list>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            <#else>
+                <h4 class="page-header-report-extended">TEST REPORT</h4>
+            </#if>
             <div class="search-field d-none d-md-block">
                 <div class="dropdown" style="margin-left: 10px;">
                     <button id="fullscreen-button" class="nav-buttons-with-icons btn btn-block btn-lg btn-gradient-primary mt-2" type="button">
