@@ -8,6 +8,13 @@ public class AppUtils {
     public static Double calculatePercentage(Product product, PercentageType percentageType) {
 
         Double percentage;
+
+        if(product.getPass() == null || product.getPass() == 0)
+            return 0D;
+
+        if(product.getFail() == null || product.getFail() == 0)
+            return 0D;
+
         switch (percentageType) {
             case PASS_PERCENT:
                 double passValue = product.getPass() / product.getTotal();
