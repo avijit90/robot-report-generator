@@ -11,9 +11,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,16 +52,11 @@ public class ViewBuilder {
             return;
         }
 
-        System.out.println("--------------------------------");
-        System.out.println(objectMapper.writeValueAsString(root));
-
         String fileName = sanitize(overviewRecord.getName());
         File outputFile = new File(outputDirectory + fileName + ".html");
 
-        checkAndBackupOldFile(fileName, outputFile);
-
         Writer fileWriter = new FileWriter(outputFile);
-        System.out.println("Output File : " + outputFile.getPath());
+        System.out.println(format("Created file : {0}", outputFile.getPath()));
 
         createDependentJSFiles();
         copyRobotFiles();
@@ -118,23 +110,6 @@ public class ViewBuilder {
         Writer consoleWriter = new OutputStreamWriter(System.out);
         template.process(root, consoleWriter);
         consoleWriter.close();
-    }
-
-    private void checkAndBackupOldFile(String fileName, File outputFile) {
-        if (outputFile.exists()) {
-            File oldOutputFile = new File(outputDirectory + fileName + ".html");
-            String dateTimeStamp = getLastModifiedDate(oldOutputFile);
-            String newFileName = outputDirectory + fileName + UNDERSCORE + dateTimeStamp + HTML_FILE_EXTENSION;
-            oldOutputFile.renameTo(new File(newFileName));
-            System.out.println("Old output File renamed to : " + newFileName);
-        }
-    }
-
-    private String getLastModifiedDate(File file) {
-        long date = file.lastModified();
-        Instant instant = Instant.ofEpochMilli(date);
-        Date dateFromOld = Date.from(instant);
-        return new SimpleDateFormat("yyyyMMddHHmm").format(dateFromOld);
     }
 
     public void populateColors(List<Product> products) {
