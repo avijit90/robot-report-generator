@@ -22,8 +22,7 @@ import static com.google.common.collect.Maps.newHashMap;
 import static com.report.generator.constants.PercentageType.FAIL_PERCENT;
 import static com.report.generator.constants.PercentageType.PASS_PERCENT;
 import static com.report.generator.constants.StatusColor.getStatusFromPercentage;
-import static com.report.generator.util.AppUtils.calculatePercentage;
-import static com.report.generator.util.AppUtils.sanitize;
+import static com.report.generator.util.AppUtils.*;
 import static java.util.Comparator.comparingInt;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
@@ -37,8 +36,10 @@ public class ReportGenerator {
     FileService fileService = null;
 
     public static void main(String[] args) throws Exception {
+        printStartBanner();
         ReportGenerator reportGenerator = new ReportGenerator();
         reportGenerator.run(args);
+        printEndBanner();
     }
 
     private void run(String[] args) throws Exception {
@@ -64,8 +65,6 @@ public class ReportGenerator {
 
         Stat smallestChildStat = statObj.stream().max(comparingInt(s -> s.getId().length())).get();
         long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
-        System.out.println("smallestChildStat ID : " + smallestChildStat.getId());
-        System.out.println("regexOccurrenceCount : " + regexOccurrenceCount);
 
         HashMap<String, List<Product>> allProducts = newHashMap();
         while (regexOccurrenceCount != 0) {
@@ -76,10 +75,7 @@ public class ReportGenerator {
             regexOccurrenceCount--;
         }
 
-        //System.out.println(objectMapper.writeValueAsString(allProducts));
-        int sum = allProducts.values().stream().map(List::size).mapToInt(Integer::intValue).sum();
-        System.out.println("map size : " + sum);
-        System.out.println("statObj size : " + statObj.size());
+        checkForInconsistencies(statObj, allProducts);
 
         regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
         while (regexOccurrenceCount != 1) {
@@ -112,7 +108,6 @@ public class ReportGenerator {
             regexOccurrenceCount--;
         }
 
-        //System.out.println(objectMapper.writeValueAsString(allProducts));
         root.put("searchList", searchResults);
         allProducts.get(regex).stream().forEach(
                 c -> {
@@ -125,26 +120,21 @@ public class ReportGenerator {
                         e.printStackTrace();
                     }
                 });
-        /*Product ftRecord = productBuilder.getFundTransferRecord();
-        Product termDeposit = productBuilder.getTermDepositRecord();
-        Product sysFeatures = productBuilder.getSysFeaturesRecord();
-        Product overviewRecord = productBuilder.buildOverview(ftRecord, sysFeatures, termDeposit);*/
-
-        //viewBuilder.createOutputFile(objectMapper, sidebarTemplate, overviewRecord, root);
-        //viewBuilder.createOutputFile(objectMapper, outputTemplate, overviewRecord, root);
-        //viewBuilder.createOutputFile(objectMapper, outputTemplate, ftRecord, root);
-        //viewBuilder.createOutputFile(objectMapper, outputTemplate, termDeposit, root);
-
-        System.out.println("--------------------------------");
 
     }
 
+    private void checkForInconsistencies(List<Stat> statObj, HashMap<String, List<Product>> allProducts) {
+        int sum = allProducts.values().stream().map(List::size).mapToInt(Integer::intValue).sum();
+        if (sum != statObj.size()) {
+            System.out.println("ERROR: Sum and statObj size mismatch !");
+            System.exit(500);
+        }
+    }
+
     private String getRegexToMatch(String regex, int count, boolean decreaseCount) {
-        //System.out.println("repetition : " + count);
         List<String> regexList = new ArrayList<>();
         IntStream.range(0, decreaseCount ? count - 1 : count).forEach(i -> regexList.add(i, regex));
         String stringToMatch = String.join("-", regexList);
-        //System.out.println("stringToMatch :" + stringToMatch);
         return stringToMatch;
     }
 
