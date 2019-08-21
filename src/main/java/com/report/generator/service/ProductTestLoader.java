@@ -4,9 +4,16 @@ import com.google.common.collect.Sets;
 import com.report.generator.constants.CoverageColor;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -148,6 +155,19 @@ public class ProductTestLoader implements ProductBuilder {
             p.setSecondCoverageColor(selectedColor.getSecondColor());
             coverageColors.remove(selectedColor);
         });
+    }
+
+    private String getTemplateOutput(Template template, Map root) throws TemplateException, IOException {
+        StringWriter stringWriter = new StringWriter();
+        template.process(root, stringWriter);
+        String sidebarOutput = stringWriter.toString();
+        return sidebarOutput;
+    }
+
+    private void writeToConsole(Template template, Map root) throws TemplateException, IOException {
+        Writer consoleWriter = new OutputStreamWriter(System.out);
+        template.process(root, consoleWriter);
+        consoleWriter.close();
     }
 
 }
