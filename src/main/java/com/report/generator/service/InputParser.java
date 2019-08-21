@@ -7,23 +7,16 @@ import java.io.File;
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.stream;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class InputParser {
 
     private String[] args;
     private String inputDir;
     private String outputDir;
-    private FileService fileService;
-
-    public InputParser(String[] args, FileService fileService) {
-        this.args = args;
-        this.fileService = fileService;
-        processUserArgs();
-    }
 
     public InputParser(String[] args) {
         this.args = args;
+        processUserArgs();
     }
 
     private void processUserArgs() {
@@ -47,11 +40,6 @@ public class InputParser {
 
         }
 
-        if (isEmpty(inputDir))
-            inputDir = fileService.getDefaultInputDirectory();
-
-        if (isEmpty(outputDir))
-            outputDir = fileService.getDefaultOutputDirectory();
     }
 
     public String getInputDir() {
