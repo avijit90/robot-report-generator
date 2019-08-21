@@ -1,7 +1,14 @@
 package com.report.generator.util;
 
+import com.report.generator.constants.CoverageColor;
 import com.report.generator.constants.PercentageType;
 import com.report.generator.model.Product;
+
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSet;
+import static java.text.MessageFormat.format;
 
 public class AppUtils {
 
@@ -9,10 +16,10 @@ public class AppUtils {
 
         Double percentage;
 
-        if(product.getPass() == null || product.getPass() == 0)
+        if (product.getPass() == null || product.getPass() == 0)
             return 0D;
 
-        if(product.getFail() == null || product.getFail() == 0)
+        if (product.getFail() == null || product.getFail() == 0)
             return 0D;
 
         switch (percentageType) {
@@ -33,6 +40,27 @@ public class AppUtils {
 
     public static String sanitize(String input) {
         return input.replaceAll("\\s+", "_");
+    }
+
+    public static void populateColors(List<Product> products) {
+
+        Set<CoverageColor> coverageColors = newHashSet();
+
+        if (products.size() > CoverageColor.values().length) {
+            System.out.println("ERROR : Cannot find coverage colors !!!");
+            System.out.println(format("products.size={0} and CoverageColor.values.length={1}", products.size(), CoverageColor.values().length));
+            System.exit(500);
+        }
+
+        while (coverageColors.size() != products.size())
+            coverageColors.add(CoverageColor.getRandomColor());
+
+        products.stream().forEach(p -> {
+            CoverageColor selectedColor = coverageColors.iterator().next();
+            p.setFirstCoverageColor(selectedColor.getFirstColor());
+            p.setSecondCoverageColor(selectedColor.getSecondColor());
+            coverageColors.remove(selectedColor);
+        });
     }
 
     public static void printEndBanner() {
