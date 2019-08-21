@@ -35,14 +35,14 @@ public class ReportGenerator {
     InputParser inputParser = null;
     FileService fileService = null;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         printStartBanner();
         ReportGenerator reportGenerator = new ReportGenerator();
         reportGenerator.run(args);
         printEndBanner();
     }
 
-    private void run(String[] args) throws Exception {
+    private void run(String[] args) {
 
         fileService = new FileService();
         inputParser = new InputParser(args, fileService);
@@ -94,7 +94,7 @@ public class ReportGenerator {
                                 searchResults.add(new SearchResult(c.getName(), pagesCreated.get(p.getId())));
                                 if (isNotEmpty(c.getSubproducts())) {
                                     viewBuilder.populateColors(c.getSubproducts());
-                                    viewBuilder.createOutputFile(objectMapper, config.getTemplate("index.ftl"), c, root);
+                                    viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -114,12 +114,15 @@ public class ReportGenerator {
                     try {
                         if (isNotEmpty(c.getSubproducts())) {
                             viewBuilder.populateColors(c.getSubproducts());
-                            viewBuilder.createOutputFile(objectMapper, config.getTemplate("index.ftl"), c, root);
+                            viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
+
+        viewBuilder.copyRobotFiles();
+        viewBuilder.createDependentFiles();
 
     }
 

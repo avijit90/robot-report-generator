@@ -1,11 +1,9 @@
 package com.report.generator.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import com.report.generator.constants.CoverageColor;
 import com.report.generator.model.Product;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -26,21 +24,19 @@ import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class ViewBuilder {
 
-    private String inputDirectory;
     private String outputDirectory;
     private String reportFilePath;
     private String outputFilePath;
     private String logFilePath;
 
     public ViewBuilder(String inputDirectory, String outputDirectory) {
-        this.inputDirectory = inputDirectory;
         this.reportFilePath = inputDirectory + "/" + REPORT_HTML;
         this.outputFilePath = inputDirectory + "/" + OUTPUT_XML;
         this.logFilePath = inputDirectory + "/" + LOG_HTML;
         this.outputDirectory = outputDirectory;
     }
 
-    public void createOutputFile(ObjectMapper objectMapper, Template template, Product overviewRecord, Map root) throws Exception {
+    public void createOutputFile(Template template, Product overviewRecord, Map root) throws Exception {
 
         root.put("product", overviewRecord);
 
@@ -58,9 +54,6 @@ public class ViewBuilder {
         Writer fileWriter = new FileWriter(outputFile);
         System.out.println(format("Created file : {0}", outputFile.getPath()));
 
-        createDependentJSFiles();
-        copyRobotFiles();
-
         try {
             template.process(root, fileWriter);
         } finally {
@@ -68,25 +61,39 @@ public class ViewBuilder {
         }
     }
 
-    private void createDependentJSFiles() throws IOException {
+    public void createDependentFiles() {
 
         String jsDirectory = outputDirectory + "/dependencies";
         Path jsPath = Paths.get(jsDirectory);
-        Files.createDirectories(jsPath);
 
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ADDONS_JS);
-        Files.copy(resourceAsStream, Paths.get(jsDirectory + "/" + ADDONS_JS), REPLACE_EXISTING);
+        try {
+            Files.createDirectories(jsPath);
 
-        InputStream abc = this.getClass().getClassLoader().getResourceAsStream(BASE_JS);
-        Files.copy(abc, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
+            InputStream cssFileContentStream = this.getClass().getClassLoader().getResourceAsStream(STYLE_SHEET_JS);
+            Files.copy(cssFileContentStream, Paths.get(jsDirectory + "/" + APP_CSS), REPLACE_EXISTING);
+
+            InputStream addonsFileContentStream = this.getClass().getClassLoader().getResourceAsStream(ADDONS_JS);
+            Files.copy(addonsFileContentStream, Paths.get(jsDirectory + "/" + ADDONS_JS), REPLACE_EXISTING);
+
+            InputStream baseFileContentStream = this.getClass().getClassLoader().getResourceAsStream(BASE_JS);
+            Files.copy(baseFileContentStream, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(500);
+        }
 
     }
 
-    private void copyRobotFiles() throws IOException {
+    public void copyRobotFiles() {
 
         String robotFilesDirectory = outputDirectory + "/robotFiles";
         Path robotFilesPath = Paths.get(robotFilesDirectory);
-        Files.createDirectories(robotFilesPath);
+        try {
+            Files.createDirectories(robotFilesPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(500);
+        }
 
         newArrayList(reportFilePath, logFilePath, outputFilePath)
                 .stream().forEach(f -> {
@@ -94,22 +101,10 @@ public class ViewBuilder {
                 copyFileToDirectory(getFile(f), getFile(robotFilesPath + "/"));
             } catch (IOException e) {
                 e.printStackTrace();
+                System.exit(500);
             }
         });
 
-    }
-
-    private String getTemplateOutput(Template template, Map root) throws TemplateException, IOException {
-        StringWriter stringWriter = new StringWriter();
-        template.process(root, stringWriter);
-        String sidebarOutput = stringWriter.toString();
-        return sidebarOutput;
-    }
-
-    private void writeToConsole(Template template, Map root) throws TemplateException, IOException {
-        Writer consoleWriter = new OutputStreamWriter(System.out);
-        template.process(root, consoleWriter);
-        consoleWriter.close();
     }
 
     public void populateColors(List<Product> products) {

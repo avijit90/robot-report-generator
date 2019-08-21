@@ -6,4 +6,6 @@ public class ApplicationConstants {
     public static final String LOG_HTML = "log.html";
     public static final String ADDONS_JS = "addons.js";
     public static final String BASE_JS = "base.js";
+    public static final String STYLE_SHEET_JS = "styleSheet.js";
+    public static final String APP_CSS = "app.css";
 }
