@@ -1,7 +1,6 @@
 package com.report.generator.util;
 
 import com.report.generator.constants.CoverageColor;
-import com.report.generator.constants.PercentageType;
 import com.report.generator.model.Product;
 
 import java.util.List;
@@ -11,32 +10,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import static java.text.MessageFormat.format;
 
 public class AppUtils {
-
-    public static Double calculatePercentage(Product product, PercentageType percentageType) {
-
-        Double percentage;
-
-        if (product.getPass() == null || product.getPass() == 0)
-            return 0D;
-
-        if (product.getFail() == null || product.getFail() == 0)
-            return 0D;
-
-        switch (percentageType) {
-            case PASS_PERCENT:
-                double passValue = product.getPass() / product.getTotal();
-                percentage = passValue * 100;
-                break;
-            case FAIL_PERCENT:
-                double failValue = product.getFail() / product.getTotal();
-                percentage = failValue * 100;
-                break;
-            default:
-                percentage = 0D;
-        }
-
-        return percentage;
-    }
 
     public static String sanitize(String input) {
         return input.replaceAll("\\s+", "_");

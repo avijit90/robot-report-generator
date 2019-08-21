@@ -4,11 +4,11 @@ import com.report.generator.model.Product;
 
 public interface ProductBuilder {
 
-    public Product buildOverview(Product ftRecord, Product sysFeatures, Product termDeposit);
+    Product buildOverview(Product ftRecord, Product sysFeatures, Product termDeposit);
 
-    public Product getTermDepositRecord();
+    Product getTermDepositRecord();
 
-    public Product getSysFeaturesRecord();
+    Product getSysFeaturesRecord();
 
-    public Product getFundTransferRecord();
+    Product getFundTransferRecord();
 }

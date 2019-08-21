@@ -16,20 +16,16 @@ import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
-import static com.report.generator.constants.PercentageType.FAIL_PERCENT;
-import static com.report.generator.constants.PercentageType.PASS_PERCENT;
+import static com.report.generator.constants.PercentageType.*;
 import static com.report.generator.constants.StatusColor.getStatusFromPercentage;
 import static com.report.generator.util.AppUtils.*;
-import static com.report.generator.util.RegexHelper.getOccurrenceOfPatternForString;
-import static com.report.generator.util.RegexHelper.getRegexToMatch;
+import static com.report.generator.util.RegexHelper.*;
 import static java.util.Comparator.comparingInt;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 public class ReportGenerator {
 
     ObjectMapper objectMapper = null;
-    List<SearchResult> searchResults = null;
-    Map<String, String> pagesCreated = null;
     ViewBuilder viewBuilder = null;
     InputParser inputParser = null;
     FileService fileService = null;
@@ -50,12 +46,10 @@ public class ReportGenerator {
         final DynamicBuilder productBuilder = new DynamicBuilder();
         Configuration config = new ConfigurationService().getConfiguration();
 
-        String regex = "s\\d+";
         Map root = newHashMap();
-        pagesCreated = newHashMap();
-
+        Map<String, String> createOutputPages = newHashMap();
+        List<SearchResult> searchResults = newArrayList();
         Robot robotRoot = productBuilder.readRobotInput(fileService.getInputDir());
-
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
 
         Stat largestStat = statObj.stream().min(comparingInt(s -> s.getId().length())).get();
@@ -63,34 +57,34 @@ public class ReportGenerator {
         root.put("homePage", fileName + ".html");
 
         Stat smallestChildStat = statObj.stream().max(comparingInt(s -> s.getId().length())).get();
-        long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
+        long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), REGEX);
 
         HashMap<String, List<Product>> allProducts = newHashMap();
         while (regexOccurrenceCount != 0) {
 
-            String stringToMatch = getRegexToMatch(regex, (int) regexOccurrenceCount, false);
+            String stringToMatch = getRegexToMatch(REGEX, (int) regexOccurrenceCount, false);
 
-            allProducts.put(stringToMatch, buildChildProducts(statObj, stringToMatch));
+            allProducts.put(stringToMatch, buildChildProducts(statObj, stringToMatch, createOutputPages, searchResults));
             regexOccurrenceCount--;
         }
 
         checkForInconsistencies(statObj, allProducts);
 
-        regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), regex);
+        regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), REGEX);
         while (regexOccurrenceCount != 1) {
 
-            String stringToMatch = getRegexToMatch(regex, (int) regexOccurrenceCount, true);
+            String stringToMatch = getRegexToMatch(REGEX, (int) regexOccurrenceCount, true);
 
             allProducts.get(stringToMatch).stream()
                     .forEach(p -> {
-                        List<Product> subProducts = allProducts.get(stringToMatch + "-" + regex)
+                        List<Product> subProducts = allProducts.get(stringToMatch + "-" + REGEX)
                                 .stream()
-                                .filter(c -> c.getId().matches(p.getId() + "-" + regex))
+                                .filter(c -> c.getId().matches(p.getId() + "-" + REGEX))
                                 .collect(Collectors.toList());
 
                         subProducts.stream().forEach(c -> {
                             try {
-                                searchResults.add(new SearchResult(c.getName(), pagesCreated.get(p.getId())));
+                                searchResults.add(new SearchResult(c.getName(), createOutputPages.get(p.getId())));
                                 if (isNotEmpty(c.getSubproducts())) {
                                     populateColors(c.getSubproducts());
                                     viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
@@ -103,12 +97,12 @@ public class ReportGenerator {
                         p.setSubProducts(subProducts);
                     });
 
-            allProducts.remove(stringToMatch + "-" + regex);
+            allProducts.remove(stringToMatch + "-" + REGEX);
             regexOccurrenceCount--;
         }
 
         root.put("searchList", searchResults);
-        allProducts.get(regex).stream().forEach(
+        allProducts.get(REGEX).stream().forEach(
                 c -> {
                     try {
                         if (isNotEmpty(c.getSubproducts())) {
@@ -133,11 +127,9 @@ public class ReportGenerator {
         }
     }
 
-    private List<Product> buildChildProducts(List<Stat> statObj, String stringToMatch) {
+    private List<Product> buildChildProducts(List<Stat> statObj, String stringToMatch, Map<String, String> createOutputPages, List<SearchResult> searchResults) {
 
         List<Product> productsList = newArrayList();
-        searchResults = newArrayList();
-
         List<Stat> matchingChildren = statObj.stream()
                 .filter(s -> s.getId().matches(stringToMatch))
                 .collect(Collectors.toList());
@@ -156,7 +148,7 @@ public class ReportGenerator {
                         productObj.setStatus(status.getColor());
                         String url = sanitize(productObj.getName()) + ".html";
                         productObj.setDetailView(url);
-                        pagesCreated.put(s.getId(), url);
+                        createOutputPages.put(s.getId(), url);
                         searchResults.add(new SearchResult(s.getName(), url));
                         return productObj;
                     }).collect(Collectors.toList());

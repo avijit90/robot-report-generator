@@ -7,6 +7,8 @@ import java.util.stream.IntStream;
 
 public class RegexHelper {
 
+    public static final String REGEX = "s\\d+";
+
     public static String getRegexToMatch(String regex, int count, boolean decreaseCount) {
         List<String> regexList = new ArrayList<>();
         IntStream.range(0, decreaseCount ? count - 1 : count).forEach(i -> regexList.add(i, regex));
