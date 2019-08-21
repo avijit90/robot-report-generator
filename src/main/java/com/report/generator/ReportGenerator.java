@@ -9,13 +9,10 @@ import com.report.generator.model.Stat;
 import com.report.generator.service.*;
 import freemarker.template.Configuration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -23,6 +20,8 @@ import static com.report.generator.constants.PercentageType.FAIL_PERCENT;
 import static com.report.generator.constants.PercentageType.PASS_PERCENT;
 import static com.report.generator.constants.StatusColor.getStatusFromPercentage;
 import static com.report.generator.util.AppUtils.*;
+import static com.report.generator.util.RegexHelper.getOccurrenceOfPatternForString;
+import static com.report.generator.util.RegexHelper.getRegexToMatch;
 import static java.util.Comparator.comparingInt;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
@@ -44,9 +43,9 @@ public class ReportGenerator {
 
     private void run(String[] args) {
 
-        fileService = new FileService();
-        inputParser = new InputParser(args, fileService);
-        viewBuilder = new ViewBuilder(inputParser.getInputDir(), inputParser.getOutputDir());
+        inputParser = new InputParser(args);
+        fileService = new FileService(inputParser);
+        viewBuilder = new ViewBuilder(fileService);
         objectMapper = new ObjectMapper();
         final DynamicBuilder productBuilder = new DynamicBuilder();
         Configuration config = new ConfigurationService().getConfiguration();
@@ -55,7 +54,7 @@ public class ReportGenerator {
         Map root = newHashMap();
         pagesCreated = newHashMap();
 
-        Robot robotRoot = productBuilder.readRobotInput(inputParser.getInputDir());
+        Robot robotRoot = productBuilder.readRobotInput(fileService.getInputDir());
 
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
 
@@ -93,7 +92,7 @@ public class ReportGenerator {
                             try {
                                 searchResults.add(new SearchResult(c.getName(), pagesCreated.get(p.getId())));
                                 if (isNotEmpty(c.getSubproducts())) {
-                                    viewBuilder.populateColors(c.getSubproducts());
+                                    populateColors(c.getSubproducts());
                                     viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
                                 }
                             } catch (Exception e) {
@@ -113,7 +112,7 @@ public class ReportGenerator {
                 c -> {
                     try {
                         if (isNotEmpty(c.getSubproducts())) {
-                            viewBuilder.populateColors(c.getSubproducts());
+                            populateColors(c.getSubproducts());
                             viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
                         }
                     } catch (Exception e) {
@@ -121,8 +120,8 @@ public class ReportGenerator {
                     }
                 });
 
-        viewBuilder.copyRobotFiles();
-        viewBuilder.createDependentFiles();
+
+        viewBuilder.copyOutputDependencies();
 
     }
 
@@ -132,18 +131,6 @@ public class ReportGenerator {
             System.out.println("ERROR: Sum and statObj size mismatch !");
             System.exit(500);
         }
-    }
-
-    private String getRegexToMatch(String regex, int count, boolean decreaseCount) {
-        List<String> regexList = new ArrayList<>();
-        IntStream.range(0, decreaseCount ? count - 1 : count).forEach(i -> regexList.add(i, regex));
-        String stringToMatch = String.join("-", regexList);
-        return stringToMatch;
-    }
-
-    private long getOccurrenceOfPatternForString(String stringToCheck, String patternString) {
-        final Pattern pattern = Pattern.compile(patternString);
-        return pattern.splitAsStream(stringToCheck).count();
     }
 
     private List<Product> buildChildProducts(List<Stat> statObj, String stringToMatch) {
