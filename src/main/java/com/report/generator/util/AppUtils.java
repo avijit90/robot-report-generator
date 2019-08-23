@@ -1,13 +1,14 @@
 package com.report.generator.util;
 
+import com.google.common.collect.Lists;
 import com.report.generator.constants.CoverageColor;
 import com.report.generator.model.Product;
 
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
-import static java.text.MessageFormat.format;
 
 public class AppUtils {
 
@@ -17,23 +18,31 @@ public class AppUtils {
 
     public static void populateColors(List<Product> products) {
 
-        Set<CoverageColor> coverageColors = newHashSet();
-
-        if (products.size() > CoverageColor.values().length) {
-            System.out.println("ERROR : Cannot find coverage colors !!!");
-            System.out.println(format("products.size={0} and CoverageColor.values.length={1}", products.size(), CoverageColor.values().length));
-            System.exit(500);
-        }
-
-        while (coverageColors.size() != products.size())
-            coverageColors.add(CoverageColor.getRandomColor());
+        Set<Set<CoverageColor>> colorCombinations = newHashSet();
 
         products.stream().forEach(p -> {
-            CoverageColor selectedColor = coverageColors.iterator().next();
-            p.setFirstCoverageColor(selectedColor.getFirstColor());
-            p.setSecondCoverageColor(selectedColor.getSecondColor());
-            coverageColors.remove(selectedColor);
+            Set<CoverageColor> currentColorCombo = generateColorCombo();
+            while (colorCombinations.contains(currentColorCombo))
+                currentColorCombo = generateColorCombo();
+
+            List<CoverageColor> colorList = newArrayList(currentColorCombo);
+            p.setFirstCoverageColor(colorList.get(0).getHexValue());
+            p.setSecondCoverageColor(colorList.get(1).getHexValue());
+            colorCombinations.add(currentColorCombo);
         });
+    }
+
+    private static Set<CoverageColor> generateColorCombo() {
+        CoverageColor firstColor = CoverageColor.getRandomColor();
+        CoverageColor secondColor = CoverageColor.getRandomColor();
+
+        // Get two distinct colors
+        if (firstColor == secondColor) {
+            while (firstColor == secondColor) {
+                secondColor = CoverageColor.getRandomColor();
+            }
+        }
+        return newHashSet(firstColor, secondColor);
     }
 
     public static void printEndBanner() {

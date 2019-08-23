@@ -1,7 +1,5 @@
 package com.report.generator.service;
 
-import com.google.common.collect.Sets;
-import com.report.generator.constants.CoverageColor;
 import com.report.generator.constants.StatusColor;
 import com.report.generator.model.Product;
 import freemarker.template.Template;
@@ -14,12 +12,10 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.report.generator.constants.PercentageType.FAIL_PERCENT;
-import static com.report.generator.constants.PercentageType.PASS_PERCENT;
-import static com.report.generator.util.AppUtils.calculatePercentage;
+import static com.report.generator.constants.PercentageType.*;
+import static com.report.generator.util.AppUtils.populateColors;
 import static com.report.generator.util.AppUtils.sanitize;
 
 public class ProductTestLoader implements ProductBuilder {
@@ -38,7 +34,7 @@ public class ProductTestLoader implements ProductBuilder {
         overviewRecord.setDetailView(sanitize(overviewRecord.getName()) + ".html");
 
         List<Product> subproductList = new ArrayList<>();
-        populateCoverageColors(newArrayList(ftRecord, termDeposit, sysFeatures));
+        populateColors(newArrayList(ftRecord, termDeposit, sysFeatures));
         subproductList.add(ftRecord);
         subproductList.add(termDeposit);
         subproductList.add(sysFeatures);
@@ -79,7 +75,7 @@ public class ProductTestLoader implements ProductBuilder {
         td.setDetailView(sanitize(td.getName()) + ".html");
 
         List<Product> subproducts = new ArrayList<>();
-        populateCoverageColors(newArrayList(fd, td));
+        populateColors(newArrayList(fd, td));
         subproducts.add(fd);
         subproducts.add(td);
         termDeposit.setSubProducts(subproducts);
@@ -134,27 +130,12 @@ public class ProductTestLoader implements ProductBuilder {
         fast.setDetailView(sanitize(fast.getName()) + ".html");
 
         List<Product> subproducts = new ArrayList<>();
-        populateCoverageColors(newArrayList(mt103, fast));
+        populateColors(newArrayList(mt103, fast));
         subproducts.add(mt103);
         subproducts.add(fast);
         ftRecord.setSubProducts(subproducts);
 
         return ftRecord;
-    }
-
-    private void populateCoverageColors(List<Product> products) {
-
-        Set<CoverageColor> coverageColors = Sets.newHashSet();
-
-        while (coverageColors.size() != products.size())
-            coverageColors.add(CoverageColor.getRandomColor());
-
-        products.stream().forEach(p -> {
-            CoverageColor selectedColor = coverageColors.iterator().next();
-            p.setFirstCoverageColor(selectedColor.getFirstColor());
-            p.setSecondCoverageColor(selectedColor.getSecondColor());
-            coverageColors.remove(selectedColor);
-        });
     }
 
     private String getTemplateOutput(Template template, Map root) throws TemplateException, IOException {

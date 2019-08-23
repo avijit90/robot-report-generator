@@ -5,28 +5,31 @@ import static java.util.Arrays.stream;
 
 public enum CoverageColor {
 
-    VIOLET("#633974", "#d7bde2"),
-    GRAY("#212f3c", "#85929e"),
-    BLUE("#21618c", "#85c1e9"),
-    GREEN("#0e6655", "#73c6b6"),
-    YELLOW("#9a7d0a", "#f4d03f"),
-    ORANGE("#873600", "#e59866"),
-    SKY(" #2980B9", "#6DD5FA"),
-    HARVEY("#1f4037","#99f2c8"),
-    BLACK_RED("#333333","#dd1818"),
-    BLUE_ORANGE("#40E0D0","#FF8C00"),
-    AQUA("#50C9C3","#96DEDA"),
-    ORANGE_YELLOW("#c21500","#ffc500"),
-    PINK_BLUE("#FC354C","#0ABFBC"),
-    PURPLE_BLUE("#B993D6", "#8CA6DB"),
-    RED(" #7b241c", " #d98880");
+    COLOR1("#e53935"),
+    COLOR14("#ff9800"),
+    COLOR8("#009688"),
+    COLOR5("#3f51b5"),
+    COLOR17("#9e9e9e"),
+    COLOR9("#4caf50"),
+    COLOR10("#8bc34a"),
+    COLOR2("#e91e63"),
+    COLOR18("#607d8b"),
+    COLOR3("#9c27b0"),
+    COLOR11("#cddc39"),
+    COLOR6("#2196f3"),
+    COLOR15("#ff5722"),
+    COLOR12("#ffeb3b"),
+    COLOR13("#ffc107"),
+    COLOR7("#00bcd4"),
+    COLOR16("#795548"),
+    COLOR4("#673ab7"),
+    COLOR19("#000000");
 
-    private String firstColor;
-    private String secondColor;
 
-    CoverageColor(String firstColor, String secondColor) {
-        this.firstColor = firstColor;
-        this.secondColor = secondColor;
+    private String hexColor;
+
+    CoverageColor(String hexColor) {
+        this.hexColor = hexColor;
     }
 
     public static CoverageColor getRandomColor() {
@@ -34,11 +37,8 @@ public enum CoverageColor {
         return stream(values).skip((int) (values.length * random())).findAny().get();
     }
 
-    public String getFirstColor() {
-        return firstColor;
+    public String getHexValue() {
+        return hexColor;
     }
 
-    public String getSecondColor() {
-        return secondColor;
-    }
 }
