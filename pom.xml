@@ -64,7 +64,7 @@
     </dependencies>
 
     <build>
-        <finalName>robot-report-generator</finalName>
+        <finalName>${artifactId}-${version}</finalName>
         <plugins>
 
             <plugin>
