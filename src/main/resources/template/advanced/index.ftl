@@ -13,7 +13,7 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row border-navbar">
             <#if searchList?has_content>
-                <h4 class="page-header-report">TEST REPORT</h4>
+                <h4 class="page-header-report">TEST REPORT - ${product.name}</h4>
                 <div class="search-field d-none d-md-block">
                     <div class="dropdown" style="margin-left: 10px;">
                         <button class="btn btn-block btn-lg btn-gradient-primary mt-2 nav-buttons-with-icons" type="button" data-toggle="dropdown">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             <#else>
-                <h4 class="page-header-report-extended">TEST REPORT</h4>
+                <h4 class="page-header-report-extended">TEST REPORT - ${product.name}</h4>
             </#if>
             <div class="search-field d-none d-md-block">
                 <div class="dropdown" style="margin-left: 10px;">
