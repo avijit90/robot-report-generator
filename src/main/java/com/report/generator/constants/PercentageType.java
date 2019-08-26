@@ -10,20 +10,22 @@ public enum PercentageType {
 
         Double percentage;
 
-        if (product.getPass() == null || product.getPass() == 0)
-            return 0D;
-
-        if (product.getFail() == null || product.getFail() == 0)
-            return 0D;
-
         switch (percentageType) {
             case PASS_PERCENT:
-                double passValue = product.getPass() / product.getTotal();
-                percentage = passValue * 100;
+                if (product.getPass() == null || product.getPass() == 0)
+                    percentage = 0D;
+                else {
+                    double passValue = product.getPass() / product.getTotal();
+                    percentage = passValue * 100;
+                }
                 break;
             case FAIL_PERCENT:
-                double failValue = product.getFail() / product.getTotal();
-                percentage = failValue * 100;
+                if (product.getFail() == null || product.getFail() == 0)
+                    percentage = 0D;
+                else {
+                    double failValue = product.getFail() / product.getTotal();
+                    percentage = failValue * 100;
+                }
                 break;
             default:
                 percentage = 0D;
