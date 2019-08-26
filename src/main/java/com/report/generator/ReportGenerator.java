@@ -52,25 +52,38 @@ public class ReportGenerator {
         Robot robotRoot = productBuilder.readRobotInput(fileService.getInputDir());
         List<Stat> statObj = robotRoot.getStatistics().getSuite().getStat();
 
-        Stat largestStat = statObj.stream().min(comparingInt(s -> s.getId().length())).get();
-        String fileName = sanitize(largestStat.getName());
-        root.put("homePage", fileName + ".html");
+        addHomePageValue(root, statObj);
 
         Stat smallestChildStat = statObj.stream().max(comparingInt(s -> s.getId().length())).get();
-        long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), REGEX);
-
-        HashMap<String, List<Product>> allProducts = newHashMap();
-        while (regexOccurrenceCount != 0) {
-
-            String stringToMatch = getRegexToMatch(REGEX, (int) regexOccurrenceCount, false);
-
-            allProducts.put(stringToMatch, buildChildProducts(statObj, stringToMatch, createOutputPages, searchResults));
-            regexOccurrenceCount--;
-        }
+        HashMap<String, List<Product>> allProducts = getAllProducts(createOutputPages, searchResults, statObj, smallestChildStat);
 
         checkForInconsistencies(statObj, allProducts);
 
-        regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), REGEX);
+        createChildOutputPages(config, root, createOutputPages, searchResults, smallestChildStat, allProducts);
+
+        root.put("searchList", searchResults);
+        createMainDashboard(config, root, allProducts);
+
+        viewBuilder.copyOutputDependencies();
+
+    }
+
+    private void createMainDashboard(Configuration config, Map root, HashMap<String, List<Product>> allProducts) {
+        allProducts.get(REGEX).stream().forEach(
+                c -> {
+                    try {
+                        if (isNotEmpty(c.getSubproducts())) {
+                            populateColors(c.getSubproducts());
+                            viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    private void createChildOutputPages(Configuration config, Map root, Map<String, String> createOutputPages, List<SearchResult> searchResults, Stat smallestChildStat, HashMap<String, List<Product>> allProducts) {
+        long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), REGEX);
         while (regexOccurrenceCount != 1) {
 
             String stringToMatch = getRegexToMatch(REGEX, (int) regexOccurrenceCount, true);
@@ -100,23 +113,27 @@ public class ReportGenerator {
             allProducts.remove(stringToMatch + "-" + REGEX);
             regexOccurrenceCount--;
         }
+    }
 
-        root.put("searchList", searchResults);
-        allProducts.get(REGEX).stream().forEach(
-                c -> {
-                    try {
-                        if (isNotEmpty(c.getSubproducts())) {
-                            populateColors(c.getSubproducts());
-                            viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+    private HashMap<String, List<Product>> getAllProducts(Map<String, String> createOutputPages, List<SearchResult> searchResults, List<Stat> statObj, Stat smallestChildStat) {
+        HashMap<String, List<Product>> allProducts = newHashMap();
+        long regexOccurrenceCount = getOccurrenceOfPatternForString(smallestChildStat.getId(), REGEX);
 
+        while (regexOccurrenceCount != 0) {
 
-        viewBuilder.copyOutputDependencies();
+            String stringToMatch = getRegexToMatch(REGEX, (int) regexOccurrenceCount, false);
 
+            allProducts.put(stringToMatch, buildChildProducts(statObj, stringToMatch, createOutputPages, searchResults));
+            regexOccurrenceCount--;
+        }
+
+        return allProducts;
+    }
+
+    private void addHomePageValue(Map root, List<Stat> statObj) {
+        Stat largestStat = statObj.stream().min(comparingInt(s -> s.getId().length())).get();
+        String fileName = sanitize(largestStat.getName());
+        root.put("homePage", fileName + ".html");
     }
 
     private void checkForInconsistencies(List<Stat> statObj, HashMap<String, List<Product>> allProducts) {
