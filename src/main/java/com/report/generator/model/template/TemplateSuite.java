@@ -1,9 +1,9 @@
-package com.report.generator.model;
+package com.report.generator.model.template;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class TemplateSuite {
 
     private String id;
     public String name;
@@ -16,13 +16,13 @@ public class Product {
     public String status;
     public String firstCoverageColor;
     public String secondCoverageColor;
-    public List<Product> subproducts;
+    public List<TemplateSuite> subTemplateSuites;
 
-    public Product(String id) {
+    public TemplateSuite(String id) {
         this.id = id;
     }
 
-    public Product() {}
+    public TemplateSuite() {}
 
     public void setDetailView(String detailView) {
         this.detailView = detailView;
@@ -32,8 +32,8 @@ public class Product {
         this.name = name;
     }
 
-    public void setSubProducts(List<Product> subProducts) {
-        this.subproducts = subProducts;
+    public void setSubProducts(List<TemplateSuite> childTemplateSuites) {
+        this.subTemplateSuites = childTemplateSuites;
     }
 
     public String getDetailView() {
@@ -48,15 +48,15 @@ public class Product {
         return status;
     }
 
-    public List<Product> getSubproducts() {
-        return subproducts;
+    public List<TemplateSuite> getSubTemplateSuites() {
+        return subTemplateSuites;
     }
 
-    public void addSubProduct(Product subProduct) {
-        if (subproducts == null)
-            subproducts = new ArrayList<>();
+    public void addSubProduct(TemplateSuite childTemplateSuite) {
+        if (subTemplateSuites == null)
+            subTemplateSuites = new ArrayList<>();
 
-        subproducts.add(subProduct);
+        subTemplateSuites.add(childTemplateSuite);
     }
 
     public Double getPass() {
@@ -107,8 +107,8 @@ public class Product {
         this.total = total;
     }
 
-    public void setSubproducts(List<Product> subproducts) {
-        this.subproducts = subproducts;
+    public void setSubTemplateSuites(List<TemplateSuite> subTemplateSuites) {
+        this.subTemplateSuites = subTemplateSuites;
     }
 
     public String getFirstCoverageColor() {

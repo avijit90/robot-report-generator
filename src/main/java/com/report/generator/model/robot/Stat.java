@@ -1,4 +1,4 @@
-package com.report.generator.model;
+package com.report.generator.model.robot;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;

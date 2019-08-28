@@ -1,4 +1,4 @@
-package com.report.generator.model;
+package com.report.generator.model.robot;
 
 import java.util.List;
 
