@@ -9,7 +9,7 @@ public class FreemarkerConfigService {
 
     private Configuration createConfiguration() {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_27);
-        cfg.setClassForTemplateLoading(this.getClass(), "\\template\\advanced\\");
+        cfg.setClassForTemplateLoading(this.getClass(), "\\template\\purple_admin\\");
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);

@@ -74,7 +74,7 @@ public class ReportGenerator {
                     try {
                         if (isNotEmpty(c.getSubTemplateSuites())) {
                             populateColors(c.getSubTemplateSuites());
-                            viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
+                            viewBuilder.createOutputFile(config.getTemplate("template.ftl"), c, root);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -100,7 +100,7 @@ public class ReportGenerator {
                                 searchResults.add(new SearchResult(c.getName(), createOutputPages.get(p.getId())));
                                 if (isNotEmpty(c.getSubTemplateSuites())) {
                                     populateColors(c.getSubTemplateSuites());
-                                    viewBuilder.createOutputFile(config.getTemplate("index.ftl"), c, root);
+                                    viewBuilder.createOutputFile(config.getTemplate("template.ftl"), c, root);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
