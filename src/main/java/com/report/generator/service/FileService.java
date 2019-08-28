@@ -88,13 +88,13 @@ public class FileService {
         try {
             Files.createDirectories(jsPath);
 
-            InputStream cssFileContentStream = this.getClass().getClassLoader().getResourceAsStream(STYLE_SHEET_JS);
+            InputStream cssFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + STYLE_SHEET_JS);
             Files.copy(cssFileContentStream, Paths.get(jsDirectory + "/" + APP_CSS), REPLACE_EXISTING);
 
-            InputStream addonsFileContentStream = this.getClass().getClassLoader().getResourceAsStream(ADDONS_JS);
+            InputStream addonsFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + ADDONS_JS);
             Files.copy(addonsFileContentStream, Paths.get(jsDirectory + "/" + ADDONS_JS), REPLACE_EXISTING);
 
-            InputStream baseFileContentStream = this.getClass().getClassLoader().getResourceAsStream(BASE_JS);
+            InputStream baseFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + BASE_JS);
             Files.copy(baseFileContentStream, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,7 +125,6 @@ public class FileService {
         });
 
     }
-
 
     public String getInputDir() {
         return inputDir;
