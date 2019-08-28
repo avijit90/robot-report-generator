@@ -14,11 +14,11 @@
 
     <div class="w3-bar-block">
 
-        <a href=${product.detailView} class="w3-bar-item w3-button w3-padding w3-blue">
-            <i class="fa fa-users fa-fw"></i>${product.name}
+        <a href=${templateSuite.detailView} class="w3-bar-item w3-button w3-padding w3-blue">
+            <i class="fa fa-users fa-fw"></i>${templateSuite.name}
         </a>
 
-        <#list product.subproducts as subproduct>
+        <#list templateSuite.subTemplateSuites as subproduct>
             <a href=${subproduct.detailView} class="w3-bar-item w3-button w3-padding">
                 <i class="fa fa-users fa-fw"></i>${subproduct.name}
             </a>

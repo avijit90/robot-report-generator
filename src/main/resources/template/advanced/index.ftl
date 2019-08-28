@@ -13,7 +13,7 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row border-navbar">
             <#if searchList?has_content>
-                <h4 class="page-header-report">TEST REPORT - ${product.name}</h4>
+                <h4 class="page-header-report">TEST REPORT - ${templateSuite.name}</h4>
                 <div class="search-field d-none d-md-block">
                     <div class="dropdown" style="margin-left: 10px;">
                         <button class="btn btn-block btn-lg btn-gradient-primary mt-2 nav-buttons-with-icons" type="button" data-toggle="dropdown">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             <#else>
-                <h4 class="page-header-report-extended">TEST REPORT - ${product.name}</h4>
+                <h4 class="page-header-report-extended">TEST REPORT - ${templateSuite.name}</h4>
             </#if>
             <div class="search-field d-none d-md-block">
                 <div class="dropdown" style="margin-left: 10px;">
@@ -52,8 +52,8 @@
                             <i style="margin-left: 20px" class="material-icons">home</i>
                         </a>
                     </li>
-                        <#list product.subproducts as subproduct>
-                            <#if subproduct.subproducts?has_content>
+                        <#list templateSuite.subTemplateSuites as subproduct>
+                            <#if subproduct.subTemplateSuites?has_content>
                                 <li class="nav-item cursor-pointer">
                                     <a class="nav-link" href="${subproduct.detailView}">
                                         <span class="menu-title">${subproduct.name}</span>
@@ -98,8 +98,8 @@
                                     <h4 class="font-weight-normal mb-3">Pass Percentage
                                         <i class="mdi mdi-diamond mdi-24px float-right"></i>
                                     </h4>
-                                    <h2 class="mb-5">${product.passPercent} %</h2>
-                                    <h6 class="card-text">Total tests passed : ${product.pass}</h6>
+                                    <h2 class="mb-5">${templateSuite.passPercent} %</h2>
+                                    <h6 class="card-text">Total tests passed : ${templateSuite.pass}</h6>
                                 </div>
                             </div>
                         </div>
@@ -109,8 +109,8 @@
                                     <h4 class="font-weight-normal mb-3">Fail Percentage
                                         <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                                     </h4>
-                                    <h2 class="mb-5">${product.failPercent} %</h2>
-                                    <h6 class="card-text">Total tests failed : ${product.fail}</h6>
+                                    <h2 class="mb-5">${templateSuite.failPercent} %</h2>
+                                    <h6 class="card-text">Total tests failed : ${templateSuite.fail}</h6>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                                     <h4 class="font-weight-normal mb-3">Total Tests Executed
                                         <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                                     </h4>
-                                    <h2 class="mb-5">${product.total}</h2>
+                                    <h2 class="mb-5">${templateSuite.total}</h2>
                                     <div style="margin-top: -185px; float: right;">
                                         <canvas id="total-status-gauge" width="200" height="200"></canvas>
                                     </div>
@@ -133,8 +133,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Product Coverage</h4>
-                                    <canvas id="product-coverage"></canvas>
-                                    <div id="product-coverage-legend"
+                                    <canvas id="templateSuite-coverage"></canvas>
+                                    <div id="templateSuite-coverage-legend"
                                          class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <#list product.subproducts as subproduct>
+                                        <#list templateSuite.subTemplateSuites as subproduct>
                                         <tr>
                                             <td class="py-1">
                                                 ${subproduct.name}
@@ -241,10 +241,10 @@
             })
 
        /*This is Doughnut*/
-           if ($("#product-coverage").length) {
-             var ctx = document.getElementById('product-coverage').getContext("2d")
+           if ($("#templateSuite-coverage").length) {
+             var ctx = document.getElementById('templateSuite-coverage').getContext("2d")
 
-             <#list product.subproducts as subproduct>
+             <#list templateSuite.subTemplateSuites as subproduct>
             var gradientStroke${subproduct.name?replace(" ", "")?replace("-","")} = ctx.createLinearGradient(0, 0, 0, 200);
             gradientStroke${subproduct.name?replace(" ", "")?replace("-","")}.addColorStop(0, '${subproduct.firstCoverageColor}');
             gradientStroke${subproduct.name?replace(" ", "")?replace("-","")}.addColorStop(1, '${subproduct.secondCoverageColor}');
@@ -254,24 +254,24 @@
 
              var trafficChartData = {
                datasets: [{
-                 data: [<#list product.subproducts as subproduct>${subproduct.total}<#sep>, </#list>],
+                 data: [<#list templateSuite.subTemplateSuites as subproduct>${subproduct.total}<#sep>, </#list>],
                      backgroundColor: [
-                        <#list product.subproducts as subproduct>
+                        <#list templateSuite.subTemplateSuites as subproduct>
                             gradientStroke${subproduct.name?replace(" ", "")?replace("-","")}<#sep>,
                         </#list>
                      ],
                      hoverBackgroundColor: [
-                       <#list product.subproducts as subproduct>
+                       <#list templateSuite.subTemplateSuites as subproduct>
                             gradientStroke${subproduct.name?replace(" ", "")?replace("-","")}<#sep>,
                         </#list>
                      ],
                      borderColor: [
-                       <#list product.subproducts as subproduct>
+                       <#list templateSuite.subTemplateSuites as subproduct>
                             gradientStroke${subproduct.name?replace(" ", "")?replace("-","")}<#sep>,
                         </#list>
                      ],
                      legendColor: [
-                        <#list product.subproducts as subproduct>
+                        <#list templateSuite.subTemplateSuites as subproduct>
                             gradientLegend${subproduct.name?replace(" ", "")?replace("-","")}<#sep>,
                         </#list>
                      ]
@@ -279,7 +279,7 @@
                }],
 
                // These labels appear in the legend and in the tooltips when hovering different arcs
-               labels: [<#list product.subproducts as subproduct>'${subproduct.name}'<#sep>, </#list>]
+               labels: [<#list templateSuite.subTemplateSuites as subproduct>'${subproduct.name}'<#sep>, </#list>]
              };
              var trafficChartOptions = {
                responsive: true,
@@ -305,13 +305,13 @@
                  return text.join('');
                }
              };
-             var trafficChartCanvas = $("#product-coverage").get(0).getContext("2d");
+             var trafficChartCanvas = $("#templateSuite-coverage").get(0).getContext("2d");
              var trafficChart = new Chart(trafficChartCanvas, {
                type: 'doughnut',
                data: trafficChartData,
                options: trafficChartOptions
              });
-             $("#product-coverage-legend").html(trafficChart.generateLegend());
+             $("#templateSuite-coverage-legend").html(trafficChart.generateLegend());
            }
          });
 
@@ -410,7 +410,7 @@
       };
 
     $(document).ready(function (){
-        $("#total-status-gauge").gauge(${product.passPercent}, { type: "halfcircle"});
+        $("#total-status-gauge").gauge(${templateSuite.passPercent}, { type: "halfcircle"});
     });
     </script>
     <script type="text/javascript">

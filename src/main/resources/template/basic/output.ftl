@@ -46,38 +46,38 @@ ${sidebar}
 
     <!-- Header -->
     <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> ${product.name} Dashboard</b></h5>
+        <h5><b><i class="fa fa-dashboard"></i> ${templateSuite.name} Dashboard</b></h5>
     </header>
 
     <div class="row">
         <div>
             <div style="float:left; width:25%; height:100%; margin-right: -25px;">
                 <div class="w3-card-4"
-                     style="border-radius: 50%; width: 100px; height: 100px; background: ${product.status}; margin-left: 70px; text-align: center; line-height: 95px">
+                     style="border-radius: 50%; width: 100px; height: 100px; background: ${templateSuite.status}; margin-left: 70px; text-align: center; line-height: 95px">
                     <strong>Status</strong></div>
             </div>
             <div style="width: 75%; float: right; height:100%; margin-right: 10px;">
                 <h5></h5>
-                Total Pass : ${product.passPercent}%
-                <#if product.passPercent == 0>
+                Total Pass : ${templateSuite.passPercent}%
+                <#if templateSuite.passPercent == 0>
                 <div class="w3-grey">
                     <div class="w3-container w3-center w3-padding w3-grey"/>
                 </div>
                 <#else>
                 <div class="w3-grey">
-                    <div class="w3-container w3-center w3-padding w3-green" style="width:${product.passPercent}%"/>
+                    <div class="w3-container w3-center w3-padding w3-green" style="width:${templateSuite.passPercent}%"/>
                 </div>
                 </#if>
         </div>
         <br>
-        Total Failed : ${product.failPercent}%
-        <#if product.failPercent == 0>
+        Total Failed : ${templateSuite.failPercent}%
+        <#if templateSuite.failPercent == 0>
             <div class="w3-grey">
                 <div class="w3-container w3-center w3-padding w3-grey"/>
             </div>
         <#else>
             <div class="w3-grey">
-                <div class="w3-container w3-center w3-padding w3-red" style="width:${product.failPercent}%"/>
+                <div class="w3-container w3-center w3-padding w3-red" style="width:${templateSuite.failPercent}%"/>
             </div>
         </#if>
 </div>
@@ -95,7 +95,7 @@ ${sidebar}
                 <th>Fail</th>
                 <th>Total</th>
             </tr>
-            <#list product.subproducts as subproduct>
+            <#list templateSuite.subTemplateSuites as subproduct>
             <tr class="w3-hover-green">
                 <td>${subproduct.name}</td>
                 <td>${subproduct.pass}</td>
@@ -141,8 +141,8 @@ google.charts.setOnLoadCallback(drawChart);
 // Draw the chart and set the chart values
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
-  ['Sub-product Code', 'Test run'],
-  <#list product.subproducts as subproduct>
+  ['Sub-templateSuite Code', 'Test run'],
+  <#list templateSuite.subTemplateSuites as subproduct>
    ['${subproduct.name}', ${subproduct.total}],
   </#list>
 ]);

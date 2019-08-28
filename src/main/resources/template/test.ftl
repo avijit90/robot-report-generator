@@ -4,17 +4,17 @@
 </head>
 <body>
 <h1>Welcome </h1>
-<p>Our latest product:
-    <a href="hello"">labels: [<#list product.subproducts as subproduct>${subproduct.name}<#sep>, </#list>]</a>
+<p>Our latest templateSuite:
+    <a href="hello"">labels: [<#list templateSuite.subTemplateSuites as subproduct>${subproduct.name}<#sep>, </#list>]</a>
 </body>
 </html>
 <script>
     /*This is Doughnut*/
        /*This is Doughnut*/
-       if ($("#product-coverage").length) {
-         var ctx = document.getElementById('product-coverage').getContext("2d")
+       if ($("#templateSuite-coverage").length) {
+         var ctx = document.getElementById('templateSuite-coverage').getContext("2d")
 
-         <#list product.subproducts as subproduct>
+         <#list templateSuite.subTemplateSuites as subproduct>
 		var gradientStroke${subproduct.name?replace(" ", "")} = ctx.createLinearGradient(0, 0, 0, 200);
 		gradientStroke${subproduct.name?replace(" ", "")}.addColorStop(0, ${subproduct.firstCoverageColor});
 		gradientStroke${subproduct.name?replace(" ", "")}.addColorStop(0, ${subproduct.secondCoverageColor});
@@ -25,22 +25,22 @@
            datasets: [{
              data: [6, 9, 12],
 				 backgroundColor: [
-				    <#list product.subproducts as subproduct>
+				    <#list templateSuite.subTemplateSuites as subproduct>
 				        gradientStroke${subproduct.name?replace(" ", "")}<#sep>,
 				    </#list>
 				 ],
 				 hoverBackgroundColor: [
-				   <#list product.subproducts as subproduct>
+				   <#list templateSuite.subTemplateSuites as subproduct>
 				        gradientStroke${subproduct.name?replace(" ", "")}<#sep>,
 				    </#list>
 				 ],
 				 borderColor: [
-				   <#list product.subproducts as subproduct>
+				   <#list templateSuite.subTemplateSuites as subproduct>
 				        gradientStroke${subproduct.name?replace(" ", "")}<#sep>,
 				    </#list>
 				 ],
 				 legendColor: [
-				    <#list product.subproducts as subproduct>
+				    <#list templateSuite.subTemplateSuites as subproduct>
 				        gradientLegend${subproduct.name?replace(" ", "")}<#sep>,
 				    </#list>
 				 ]
@@ -74,13 +74,13 @@
              return text.join('');
            }
          };
-         var trafficChartCanvas = $("#product-coverage").get(0).getContext("2d");
+         var trafficChartCanvas = $("#templateSuite-coverage").get(0).getContext("2d");
          var trafficChart = new Chart(trafficChartCanvas, {
            type: 'doughnut',
            data: trafficChartData,
            options: trafficChartOptions
          });
-         $("#product-coverage-legend").html(trafficChart.generateLegend());
+         $("#templateSuite-coverage-legend").html(trafficChart.generateLegend());
        }
      });
 </script>
