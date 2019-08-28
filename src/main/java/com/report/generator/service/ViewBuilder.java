@@ -1,6 +1,6 @@
 package com.report.generator.service;
 
-import com.report.generator.model.Product;
+import com.report.generator.model.template.TemplateSuite;
 import freemarker.template.Template;
 
 import java.io.File;
@@ -21,9 +21,9 @@ public class ViewBuilder {
         this.fileService = fileService;
     }
 
-    public void createOutputFile(Template template, Product overviewRecord, Map root) throws Exception {
+    public void createOutputFile(Template template, TemplateSuite overviewRecord, Map root) throws Exception {
 
-        root.put("product", overviewRecord);
+        root.put("templateSuite", overviewRecord);
 
         if (containsIgnoreCase(template.getName(), "sidebar")) {
             StringWriter stringWriter = new StringWriter();

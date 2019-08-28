@@ -1,8 +1,7 @@
 package com.report.generator.util;
 
-import com.google.common.collect.Lists;
 import com.report.generator.constants.CoverageColor;
-import com.report.generator.model.Product;
+import com.report.generator.model.template.TemplateSuite;
 
 import java.util.List;
 import java.util.Set;
@@ -16,11 +15,11 @@ public class AppUtils {
         return input.replaceAll("\\s+", "_");
     }
 
-    public static void populateColors(List<Product> products) {
+    public static void populateColors(List<TemplateSuite> templateSuites) {
 
         Set<Set<CoverageColor>> colorCombinations = newHashSet();
 
-        products.stream().forEach(p -> {
+        templateSuites.stream().forEach(p -> {
             Set<CoverageColor> currentColorCombo = generateColorCombo();
             while (colorCombinations.contains(currentColorCombo))
                 currentColorCombo = generateColorCombo();

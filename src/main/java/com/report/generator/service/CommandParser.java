@@ -8,13 +8,13 @@ import static java.text.MessageFormat.format;
 import static java.util.Arrays.stream;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 
-public class InputParser {
+public class CommandParser {
 
     private String[] args;
     private String inputDir;
     private String outputDir;
 
-    public InputParser(String[] args) {
+    public CommandParser(String[] args) {
         this.args = args;
         processUserArgs();
     }

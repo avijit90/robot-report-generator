@@ -26,14 +26,14 @@ public class FileService {
     private String outputFilePath;
     private String logFilePath;
 
-    public FileService(InputParser inputParser) {
-        processInputParser(inputParser);
+    public FileService(CommandParser commandParser) {
+        processInputParser(commandParser);
         populateRobotFilesPath();
     }
 
-    private void processInputParser(InputParser inputParser) {
-        inputDir = isEmpty(inputParser.getInputDir()) ? getDefaultInputDirectory() : inputParser.getInputDir();
-        outputDir = isEmpty(inputParser.getOutputDir()) ? getDefaultOutputDirectory() : inputParser.getOutputDir();
+    private void processInputParser(CommandParser commandParser) {
+        inputDir = isEmpty(commandParser.getInputDir()) ? getDefaultInputDirectory() : commandParser.getInputDir();
+        outputDir = isEmpty(commandParser.getOutputDir()) ? getDefaultOutputDirectory() : commandParser.getOutputDir();
     }
 
     private void populateRobotFilesPath() {

@@ -3,7 +3,7 @@ package com.report.generator.service;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
-public class ConfigurationService {
+public class FreemarkerConfigService {
 
     private Configuration configuration;
 
@@ -17,7 +17,7 @@ public class ConfigurationService {
         return cfg;
     }
 
-    public Configuration getConfiguration() {
+    public Configuration getFreemarkerConfiguration() {
 
         if (configuration == null)
             this.configuration = createConfiguration();
