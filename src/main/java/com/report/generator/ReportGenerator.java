@@ -29,7 +29,6 @@ public class ReportGenerator {
         objectMapper = new ObjectMapper();
         inputReader = new XmlInputReader();
         Robot robotRoot = inputReader.readInput(fileService.getInputDir());
-        System.out.println("Robot object loaded into Memory successfully !");
         viewBuilder.buildView(robotRoot);
     }
 

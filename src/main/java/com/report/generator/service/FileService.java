@@ -3,7 +3,6 @@ package com.report.generator.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -12,6 +11,8 @@ import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.report.generator.constants.ApplicationConstants.*;
+import static java.nio.file.Files.copy;
+import static java.nio.file.Files.createDirectories;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.io.FileUtils.copyFileToDirectory;
@@ -86,17 +87,18 @@ public class FileService {
         Path jsPath = Paths.get(jsDirectory);
 
         try {
-            Files.createDirectories(jsPath);
+            createDirectories(jsPath);
 
             InputStream cssFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + STYLE_SHEET_JS);
-            Files.copy(cssFileContentStream, Paths.get(jsDirectory + "/" + APP_CSS), REPLACE_EXISTING);
+            copy(cssFileContentStream, Paths.get(jsDirectory + "/" + APP_CSS), REPLACE_EXISTING);
 
             InputStream addonsFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + ADDONS_JS);
-            Files.copy(addonsFileContentStream, Paths.get(jsDirectory + "/" + ADDONS_JS), REPLACE_EXISTING);
+            copy(addonsFileContentStream, Paths.get(jsDirectory + "/" + ADDONS_JS), REPLACE_EXISTING);
 
             InputStream baseFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + BASE_JS);
-            Files.copy(baseFileContentStream, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
+            copy(baseFileContentStream, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
         } catch (Exception e) {
+            System.out.println(format("ERROR: Unable to copy dependent css and js files.`"));
             e.printStackTrace();
             System.exit(500);
         }
@@ -108,8 +110,9 @@ public class FileService {
         String robotFilesDirectory = outputDir + "/robotFiles";
         Path robotFilesPath = Paths.get(robotFilesDirectory);
         try {
-            Files.createDirectories(robotFilesPath);
+            createDirectories(robotFilesPath);
         } catch (IOException e) {
+            System.out.println(format("ERROR: Unable to create directory={0}", robotFilesDirectory));
             e.printStackTrace();
             System.exit(500);
         }
@@ -119,6 +122,7 @@ public class FileService {
             try {
                 copyFileToDirectory(getFile(f), getFile(robotFilesPath + "/"));
             } catch (IOException e) {
+                System.out.println(format("ERROR: Unable to copy file={0} to the outputDirectory.", f));
                 e.printStackTrace();
                 System.exit(500);
             }
