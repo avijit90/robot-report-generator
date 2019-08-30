@@ -35,6 +35,12 @@ public class CommandParser {
                         System.out.println(format("Either the output directory is not present or write " +
                                 "permission is not given for the directory={0}", output));
                     }
+                } else {
+                    System.out.println(format("ERROR: entered program argument={0} do not match the expected " +
+                            "arguments.", arg));
+                    System.out.println("ERROR: Please check your input, input arguments can either be in the " +
+                            "form input=<path_to_output_xml_dir> or output=<path_to_output_dir>");
+                    System.exit(500);
                 }
             });
 

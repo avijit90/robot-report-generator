@@ -98,7 +98,7 @@ public class FileService {
             InputStream baseFileContentStream = this.getClass().getResourceAsStream("/template/purple_admin/dependencies/" + BASE_JS);
             copy(baseFileContentStream, Paths.get(jsDirectory + "/" + BASE_JS), REPLACE_EXISTING);
         } catch (Exception e) {
-            System.out.println(format("ERROR: Unable to copy dependent css and js files.`"));
+            System.out.println(format("ERROR: Unable to copy dependent css and js files."));
             e.printStackTrace();
             System.exit(500);
         }
