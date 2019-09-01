@@ -44,7 +44,10 @@ public class CommandParser {
                 }
             });
 
+        } else {
+            System.out.println("Additional input params not specified, falling back to default inputDir & outputDir values");
         }
+
 
     }
 
