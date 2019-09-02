@@ -1,9 +1,11 @@
 package com.report.generator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.report.generator.constants.ExecutionStatus;
 import com.report.generator.model.robot.Robot;
 import com.report.generator.service.*;
 
+import static com.report.generator.constants.ExecutionStatus.SUCCESS;
 import static com.report.generator.util.AppUtils.printEndBanner;
 import static com.report.generator.util.AppUtils.printStartBanner;
 
@@ -24,6 +26,10 @@ public class ReportGenerator {
 
     private void run(String[] args) {
         commandParser = new CommandParser(args);
+        ExecutionStatus executionStatus = commandParser.processUserArgs();
+        if (!SUCCESS.equals(executionStatus))
+            System.exit(executionStatus.getStatusCode());
+
         fileService = new FileService(commandParser);
         viewBuilder = new ViewBuilder(fileService);
         objectMapper = new ObjectMapper();
