@@ -5,6 +5,13 @@ import freemarker.template.TemplateExceptionHandler;
 
 public class FreemarkerConfigService {
 
+    public FreemarkerConfigService(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public FreemarkerConfigService() {
+    }
+
     private Configuration configuration;
 
     private Configuration createConfiguration() {
@@ -24,4 +31,5 @@ public class FreemarkerConfigService {
 
         return configuration;
     }
+
 }
