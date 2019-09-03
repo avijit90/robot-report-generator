@@ -1,6 +1,8 @@
 package com.report.generator.service;
 
+import com.report.generator.constants.ExecutionStatus;
+
 public interface InputReader<T> {
 
-    T readInput(String filePath);
+    ExecutionStatus readInput(String filePath);
 }

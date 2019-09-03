@@ -2,12 +2,15 @@ package com.report.generator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.report.generator.constants.ExecutionStatus;
-import com.report.generator.model.robot.Robot;
-import com.report.generator.service.*;
+import com.report.generator.service.CommandParser;
+import com.report.generator.service.FileService;
+import com.report.generator.service.ViewBuilder;
+import com.report.generator.service.XmlInputReader;
 
 import static com.report.generator.constants.ExecutionStatus.SUCCESS;
 import static com.report.generator.util.AppUtils.printEndBanner;
 import static com.report.generator.util.AppUtils.printStartBanner;
+import static java.lang.System.exit;
 
 public class ReportGenerator {
 
@@ -15,7 +18,7 @@ public class ReportGenerator {
     ViewBuilder viewBuilder = null;
     CommandParser commandParser = null;
     FileService fileService = null;
-    InputReader<Robot> inputReader = null;
+    XmlInputReader inputReader = null;
 
     public static void main(String[] args) {
         printStartBanner();
@@ -26,16 +29,23 @@ public class ReportGenerator {
 
     private void run(String[] args) {
         commandParser = new CommandParser(args);
-        ExecutionStatus executionStatus = commandParser.processUserArgs();
-        if (!SUCCESS.equals(executionStatus))
-            System.exit(executionStatus.getStatusCode());
+        ExecutionStatus commandParserExecutionStatus = commandParser.processUserArgs();
+        checkExecutionStatus(commandParserExecutionStatus);
 
         fileService = new FileService(commandParser);
         viewBuilder = new ViewBuilder(fileService);
         objectMapper = new ObjectMapper();
         inputReader = new XmlInputReader();
-        Robot robotRoot = inputReader.readInput(fileService.getInputDir());
-        viewBuilder.buildView(robotRoot);
+
+        ExecutionStatus inputReaderExecutionStatus = inputReader.readInput(fileService.getInputDir());
+        checkExecutionStatus(inputReaderExecutionStatus);
+
+        viewBuilder.buildView(inputReader.getRootObject());
+    }
+
+    private void checkExecutionStatus(ExecutionStatus executionStatus) {
+        if (!SUCCESS.equals(executionStatus))
+            exit(executionStatus.getStatusCode());
     }
 
 }
