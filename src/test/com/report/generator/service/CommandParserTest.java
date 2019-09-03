@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.report.generator.constants.ExecutionStatus.SUCCESS;
+import static com.report.generator.constants.ExecutionStatus.*;
 import static java.nio.file.Files.createDirectory;
 import static java.nio.file.Files.deleteIfExists;
 import static org.apache.commons.lang3.ArrayUtils.EMPTY_STRING_ARRAY;
@@ -96,6 +96,53 @@ public class CommandParserTest {
         assertEquals(SUCCESS, actualResponse);
         assertEquals(inputDirValue, unit.getInputDir());
         assertEquals(TEMP_DIR_NAME, unit.getOutputDir());
+    }
+
+    @Test
+    public void givenRandomInput_ThenShouldReturnWithUnrecognizedInputStatus() {
+        String[] args = {"unrecognized=input"};
+        unit = new CommandParser(args);
+        ExecutionStatus actualResponse = unit.processUserArgs();
+
+        assertEquals(UNRECOGNIZED_INPUT, actualResponse);
+        assertEquals(null, unit.getInputDir());
+        assertEquals(null, unit.getOutputDir());
+    }
+
+    @Test
+    public void givenInvalidOutputDirValue_ThenShouldFailExecution() {
+        String invalidOutputArg = "hello";
+        String inputDirValue = "in";
+        String[] args = {INPUT + inputDirValue, OUTPUT + invalidOutputArg};
+        unit = new CommandParser(args);
+        ExecutionStatus actualResponse = unit.processUserArgs();
+
+        assertEquals(INCORRECT_OUTPUT_DIR, actualResponse);
+        assertEquals(inputDirValue, unit.getInputDir());
+        assertEquals(null, unit.getOutputDir());
+    }
+
+
+    @Test
+    public void givenInvalidInputArg_ThenShouldFailExecution() {
+        String[] args = {INPUT};
+        unit = new CommandParser(args);
+        ExecutionStatus actualResponse = unit.processUserArgs();
+
+        assertEquals(UNABLE_TO_DETERMINE_INPUT_DIR, actualResponse);
+        assertEquals(null, unit.getInputDir());
+        assertEquals(null, unit.getOutputDir());
+    }
+
+    @Test
+    public void givenInvalidOutputArg_ThenShouldFailExecution() {
+        String[] args = {OUTPUT};
+        unit = new CommandParser(args);
+        ExecutionStatus actualResponse = unit.processUserArgs();
+
+        assertEquals(UNABLE_TO_DETERMINE_OUTPUT_DIR, actualResponse);
+        assertEquals(null, unit.getInputDir());
+        assertEquals(null, unit.getOutputDir());
     }
 
 }
