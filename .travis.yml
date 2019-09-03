@@ -1,6 +1,10 @@
+jdk:
+  - openjdk8
+  - openjdk11
+
 language: java
 sudo: false
-script: "mvn clean install"
+script: "mvn clean install -DskipTests=false"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
